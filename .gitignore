@@ -2,38 +2,86 @@
 #        BACKEND (.NET / VS)          #
 #######################################
 
-## Build results
-**/bin/
-**/obj/
+# Build results
+bin/
+obj/
+[Bb]uild/
+[Bb]in/
+[Oo]bj/
 
-## User-specific files
-**/*.user
-**/*.suo
-**/*.userosscache
-**/*.sln.docstates
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.rsuser
 
-## Rider
-.idea/
-
-## Logs
+# Temporary files
+*.tmp
+*.temp
 *.log
+*.tlog
 
-## Database
+# VS-specific folders
+.vs/
+.vshistory/
+.localhistory/
+_ReSharper*/
+.idea/
+*.DotSettings.user
+
+# EF Core
+Migrations/
+
+# Database files
 *.mdf
 *.ldf
 *.ndf
+*.db
+*.db-shm
+*.db-wal
+*.dbmdl
 
-## EF Core
-Migrations/
+# launchSettings (optionnel, souvent à ignorer sauf en équipe avec settings partagés)
+**/launchSettings.json
 
-## Configuration
+# Configuration
 **/appsettings.Development.json
 **/appsettings.Local.json
 *.env
+*.env.*
 
-## Publish results
+# Publish results
 **/publish/
 **/out/
+
+# Logs
+*.log
+*.svclog
+
+# Test results / coverage
+TestResult*/
+coverage*.json
+coverage*.xml
+coverage*.info
+*.coverage
+*.coveragexml
+
+# Code Coverage tools
+.axoCover/
+coverage/
+BenchmarkDotNet.Artifacts/
+
+# JetBrains Rider
+.idea/
+
+# Temporary backups
+*.bak
+*.backup.json
+Backup*/
+MigrationBackup/
+UpgradeLog*.htm
+UpgradeLog*.XML
 
 #######################################
 #        FRONTEND (Angular)           #
@@ -62,9 +110,14 @@ frontend/.angular/cache/
 .vscode/
 *.code-workspace
 
-# OS
+# OS / Windows
 .DS_Store
 Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
 
 # Git
 *.orig
