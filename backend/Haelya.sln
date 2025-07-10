@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.36105.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haelya.Api", "Haelya.Api\Haelya.Api.csproj", "{A91E15E6-12CF-471F-B916-034510AE221F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haelya.Application", "Haely.Application\Haelya.Application.csproj", "{8630C0D3-4BD9-4424-88EE-55C10E905520}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haelya.Domain", "Haelya.Domain\Haelya.Domain.csproj", "{FBDB38A7-D51A-4F51-93E8-44E41A0393F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haelya.Infrastructure", "Haelya.Infrastructure\Haelya.Infrastructure.csproj", "{61C1C05D-071E-4463-A3B3-EA542A73570F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haelya.Shared", "Haelya.Shared\Haelya.Shared.csproj", "{AE7CC3FD-138E-4715-AE8E-2B429D207228}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A91E15E6-12CF-471F-B916-034510AE221F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A91E15E6-12CF-471F-B916-034510AE221F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A91E15E6-12CF-471F-B916-034510AE221F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A91E15E6-12CF-471F-B916-034510AE221F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8630C0D3-4BD9-4424-88EE-55C10E905520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8630C0D3-4BD9-4424-88EE-55C10E905520}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8630C0D3-4BD9-4424-88EE-55C10E905520}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8630C0D3-4BD9-4424-88EE-55C10E905520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBDB38A7-D51A-4F51-93E8-44E41A0393F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBDB38A7-D51A-4F51-93E8-44E41A0393F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBDB38A7-D51A-4F51-93E8-44E41A0393F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBDB38A7-D51A-4F51-93E8-44E41A0393F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61C1C05D-071E-4463-A3B3-EA542A73570F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61C1C05D-071E-4463-A3B3-EA542A73570F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61C1C05D-071E-4463-A3B3-EA542A73570F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61C1C05D-071E-4463-A3B3-EA542A73570F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE7CC3FD-138E-4715-AE8E-2B429D207228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE7CC3FD-138E-4715-AE8E-2B429D207228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE7CC3FD-138E-4715-AE8E-2B429D207228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE7CC3FD-138E-4715-AE8E-2B429D207228}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91793BD3-D813-4019-BB05-6F0C2B4F3F67}
+	EndGlobalSection
+EndGlobal
