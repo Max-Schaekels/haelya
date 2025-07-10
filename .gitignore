@@ -1,1 +1,78 @@
-"# Gitignore initial" 
+#######################################
+#        BACKEND (.NET / VS)          #
+#######################################
+
+## Build results
+**/bin/
+**/obj/
+
+## User-specific files
+**/*.user
+**/*.suo
+**/*.userosscache
+**/*.sln.docstates
+
+## Rider
+.idea/
+
+## Logs
+*.log
+
+## Database
+*.mdf
+*.ldf
+*.ndf
+
+## EF Core
+Migrations/
+
+## Configuration
+**/appsettings.Development.json
+**/appsettings.Local.json
+*.env
+
+## Publish results
+**/publish/
+**/out/
+
+#######################################
+#        FRONTEND (Angular)           #
+#######################################
+
+# dependencies
+frontend/node_modules/
+
+# production
+frontend/dist/
+frontend/.angular/
+
+# misc
+frontend/.vscode/
+frontend/.env
+frontend/.env.local
+
+# Angular build cache
+frontend/.angular/cache/
+
+#######################################
+#        GLOBAL / OS / GIT            #
+#######################################
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+*.orig
+*.patch
+*.rej
+
+# Archives
+*.zip
+*.tar
+*.gz
+*.7z
