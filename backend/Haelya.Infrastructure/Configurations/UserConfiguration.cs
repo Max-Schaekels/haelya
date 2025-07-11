@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Haelya.Infrastructure.Configurations
 {
-    public class UtilisateurConfiguration : IEntityTypeConfiguration<Utilisateur>
+    public class UserConfiguration : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<Utilisateur> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("Utilisateur");
+            builder.ToTable("User");
 
             builder.HasKey(x => x.Id);
 
@@ -38,22 +38,10 @@ namespace Haelya.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
-            
-            builder.Property(u => u.Address)
-                .HasMaxLength(255);
 
-            builder.Property(u => u.City)
-                .HasMaxLength(100);
-
-            builder.Property(u => u.Country)
-                .HasMaxLength(100);
-
-            builder.Property(u => u.PostalCode)
-                .HasMaxLength(20);
-
-            
             builder.Property(u => u.PhoneNumber)
-                .HasMaxLength(20);
+                .HasMaxLength(20)
+                .IsRequired(false);
 
             
             builder.Property(u => u.BirthDate)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Haelya.Domain.Entities
 {
-    public class Utilisateur
+    public class User
     {
 
         public long Id { get; set; }
@@ -15,11 +15,7 @@ namespace Haelya.Domain.Entities
         public string HashPassword { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
-        public string PostalCode { get; set; }
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
         public DateTime? BirthDate { get; set; }
         public DateTime RegisterDate { get; set; }
         public Role Role { get; set; }
