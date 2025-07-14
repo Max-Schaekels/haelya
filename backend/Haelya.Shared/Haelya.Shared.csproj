@@ -8,13 +8,17 @@
 
   <ItemGroup>
     <Folder Include="Helpers\" />
-    <Folder Include="Mappers\" />
     <Folder Include="Extensions\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="15.0.0" />
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Haely.Application\Haelya.Application.csproj" />
+    <ProjectReference Include="..\Haelya.Domain\Haelya.Domain.csproj" />
   </ItemGroup>
 
 </Project>

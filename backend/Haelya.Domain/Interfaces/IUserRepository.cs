@@ -13,5 +13,10 @@ namespace Haelya.Domain.Interfaces
         Task<User?> GetByIdAsync(long id);
         Task AddAsync(User user);
         Task<bool> EmailExistsAsync(string email);
+        Task<List<User>> GetAllAsync();
+        Task UpdateAsync (User user);
+        Task UpdatePasswordAsync(long id, string hashPassword);
+        Task DeleteAsync(long id);
+        Task<string?> GetPasswordHashByEmailAsync(string email);
     }
 }

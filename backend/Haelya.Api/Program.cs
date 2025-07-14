@@ -1,9 +1,35 @@
 using Haelya.Infrastructure;
+using Haelya.Shared.Mappers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Reflection;
+using AutoMapper;
+using FluentValidation;
+using Haelya.Application.DTOs.User;
+using Haelya.Application.Validators.User;
+using Haelya.Application.Interfaces;
+using Haelya.Application.Services;
+using Haelya.Infrastructure.Logging.Security;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//FluentValidation
+builder.Services.AddScoped<IValidator<LoginDTO>, LoginDTOValidator>();
+builder.Services.AddScoped<IValidator<RegisterDTO>, RegisterDTOValidator>();
+
+//AutoMapper
+builder.Services.AddAutoMapper(cfg => {
+    cfg.AddProfile(new UserMappingProfile());
+    //add other line for more profiles
+});
+
+//Services 
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISecurityLogger, DummySecurityLogger>();
 
 //DbContext
 builder.Services.AddDbContext<HaelyaDbContext>(options =>
