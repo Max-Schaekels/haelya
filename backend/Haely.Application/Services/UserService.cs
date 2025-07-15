@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using BCrypt.Net;
 using Haelya.Application.DTOs.User;
+using Haelya.Application.Exceptions;
 using Haelya.Application.Interfaces;
 using Haelya.Domain.Entities;
 using Haelya.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Haelya.Application.Services
@@ -25,14 +24,34 @@ namespace Haelya.Application.Services
             _logger = logger;
         }
 
-        public Task ChangePasswordAsync(long id, ChangePasswordDTO dto)
+        public async Task ChangePasswordAsync(long id, ChangePasswordDTO dto)
         {
-           return _userRepository.UpdatePasswordAsync(id, dto.NewPassword);
+            try
+            {
+                string hashPassword = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+
+                await _userRepository.UpdatePasswordAsync(id, hashPassword);
+                await _logger.LogAsync(id, "Mot de passe modifié avec succès");
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogAsync(id, $"Erreur lors du changement de mot de passe : {ex.Message}");
+                throw; 
+            }
         }
 
-        public Task DeleteAsync(long id)
+        public async Task DeleteAsync(long id)
         {
-            return _userRepository.DeleteAsync(id);
+            try
+            {
+                await _userRepository.DeleteAsync(id);
+                await _logger.LogAsync(id, "Utilisateur supprimé avec succès");
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogAsync(id, $"Erreur lors de la suppression de l'utilisateur : {ex.Message}");
+                throw;
+            }
         }
 
         public Task<bool> EmailExistsAsync(string email)
@@ -51,7 +70,7 @@ namespace Haelya.Application.Services
             User? user = await _userRepository.GetByEmailAsync(email);
             if (user == null)
             {
-                throw new ArgumentException("User invalide");
+                throw new UserNotFoundException();
             }
             return _mapper.Map<UserDTO>(user);
         }
@@ -61,7 +80,7 @@ namespace Haelya.Application.Services
             User? user = await _userRepository.GetByIdAsync(id);
             if (user == null)
             {
-                throw new KeyNotFoundException("User not found.");
+                throw new UserNotFoundException();
             }
             return _mapper.Map<UserDTO>(user);
         }
@@ -75,21 +94,21 @@ namespace Haelya.Application.Services
                 if (string.IsNullOrEmpty(hashpassword))
                 {
                     await _logger.LogAsync(null, "Tentative de connexion avec un email invalide.");
-                    throw new ArgumentException("Email invalide.");
+                    throw new InvalidCredentialsException();
                 }
 
                 if (!BCrypt.Net.BCrypt.Verify(dto.Password, hashpassword))
                 {
                     User? user = await _userRepository.GetByEmailAsync(dto.Email);
                     await _logger.LogAsync(user?.Id, "Mot de passe incorrect lors du login.");
-                    throw new ArgumentException("Mot de passe invalide.");
+                    throw new IncorrectPasswordException();
                 }
 
                 User? userSuccess = await _userRepository.GetByEmailAsync(dto.Email);
                 if (userSuccess == null)
                 {
                     await _logger.LogAsync(null, "Utilisateur introuvable après vérification du mot de passe.");
-                    throw new KeyNotFoundException("Utilisateur introuvable.");
+                    throw new UserNotFoundException();
                 }
 
                 await _logger.LogAsync(userSuccess.Id, "Connexion réussie.");
@@ -102,14 +121,44 @@ namespace Haelya.Application.Services
             }
         }
 
-        public Task<UserDTO> RegisterAsync(RegisterDTO dto)
+        public async Task<UserDTO> RegisterAsync(RegisterDTO dto)
         {
-            throw new NotImplementedException();
+            if (await _userRepository.EmailExistsAsync(dto.Email))
+            {
+                throw new EmailAlreadyUsedException();
+            }
+            User user = _mapper.Map<User>(dto);
+            
+            user.HashPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+
+            user.RegisterDate = DateTime.UtcNow;
+
+            await _userRepository.AddAsync(user);
+            await _logger.LogAsync(user.Id, "Utilisateur enregistré avec succès");
+
+            return _mapper.Map<UserDTO>(user);
+            
         }
 
-        public Task UpdateAsync(long id, UpdateUserDTO dto)
+        public async Task UpdateAsync(long id, UpdateUserDTO dto)
         {
-            throw new NotImplementedException();
+            
+            User? existingUser = await _userRepository.GetByIdAsync(id);
+
+            if (existingUser == null)
+            {
+                await _logger.LogAsync(null, $"Tentative de mise à jour sur un utilisateur inexistant (id: {id})");
+                throw new UserNotFoundException();
+            }
+
+            existingUser.FirstName = dto.FirstName;
+            existingUser.LastName = dto.LastName;
+            existingUser.PhoneNumber = dto.PhoneNumber;
+            existingUser.BirthDate = dto.BirthDate;
+
+            await _userRepository.UpdateAsync(existingUser);
+            await _logger.LogAsync(existingUser.Id, $"Utilisateur mis à jour avec succès");
+
         }
     }
 }
