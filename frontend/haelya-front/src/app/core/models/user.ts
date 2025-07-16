@@ -3,10 +3,10 @@ import { UserRole } from "./user-role";
 export interface User{
     id: number;
     email : string;
-    lastname : string;
-    firstname : string;
-    phonenumber : string | null;
-    birthdate : Date | null;
-    registerdate : Date;
+    lastName : string;
+    firstName : string;
+    phoneNumber : string | null;
+    birthDate : Date | null;
+    registerDate : Date;
     role : UserRole;
 }

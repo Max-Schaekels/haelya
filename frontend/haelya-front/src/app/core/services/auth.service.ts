@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,7 @@ export class AuthService {
       return false;
     }
   }
-/*
+
   getCurrentUser(): User | null {
     const userJson = localStorage.getItem(this.USER_KEY);
     if (userJson) {
@@ -49,5 +50,6 @@ export class AuthService {
     }
     return null;
   }
-    */
+
 }
+    
