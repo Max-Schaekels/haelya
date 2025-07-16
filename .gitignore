@@ -84,23 +84,53 @@ UpgradeLog*.htm
 UpgradeLog*.XML
 
 #######################################
-#        FRONTEND (Angular)           #
+#   FRONTEND (Angular - haelya-front) #
 #######################################
 
 # dependencies
-frontend/node_modules/
+frontend/haelya-front/node_modules/
 
-# production
-frontend/dist/
-frontend/.angular/
+# production build
+frontend/haelya-front/dist/
+frontend/haelya-front/.angular/
+frontend/haelya-front/.angular/cache/
+frontend/haelya-front/out-tsc/
+frontend/haelya-front/tmp/
+frontend/haelya-front/bazel-out/
+
+# logs
+frontend/haelya-front/npm-debug.log
+frontend/haelya-front/yarn-error.log
+frontend/haelya-front/testem.log
+frontend/haelya-front/libpeerconnection.log
+
+# coverage
+frontend/haelya-front/coverage/
 
 # misc
-frontend/.vscode/
-frontend/.env
-frontend/.env.local
+frontend/haelya-front/.sass-cache/
+frontend/haelya-front/typings/
+frontend/haelya-front/connect.lock
 
-# Angular build cache
-frontend/.angular/cache/
+# IDEs and editors
+frontend/haelya-front/.idea/
+frontend/haelya-front/.project
+frontend/haelya-front/.classpath
+frontend/haelya-front/.c9/
+frontend/haelya-front/.settings/
+frontend/haelya-front/*.launch
+frontend/haelya-front/*.sublime-workspace
+
+# VSCode
+frontend/haelya-front/.vscode/*
+!frontend/haelya-front/.vscode/settings.json
+!frontend/haelya-front/.vscode/tasks.json
+!frontend/haelya-front/.vscode/launch.json
+!frontend/haelya-front/.vscode/extensions.json
+
+# System
+frontend/haelya-front/.DS_Store
+frontend/haelya-front/Thumbs.db
 
 #######################################
 #        GLOBAL / OS / GIT            #
