@@ -45,7 +45,7 @@ namespace Haelya.Application.Services
             try
             {
                 await _userRepository.DeleteAsync(id);
-                await _logger.LogAsync(id, "Utilisateur supprimé avec succès");
+                await _logger.LogAsync(id, "Utilisateur anonymisé suite à une demande de suppression");
             }
             catch (Exception ex)
             {
@@ -89,35 +89,27 @@ namespace Haelya.Application.Services
         {
             try
             {
-                string? hashpassword = await _userRepository.GetPasswordHashByEmailAsync(dto.Email);
+                User? user = await _userRepository.GetByEmailAsync(dto.Email);
 
-                if (string.IsNullOrEmpty(hashpassword))
+                if (user == null)
                 {
                     await _logger.LogAsync(null, "Tentative de connexion avec un email invalide.");
                     throw new InvalidCredentialsException();
                 }
 
-                if (!BCrypt.Net.BCrypt.Verify(dto.Password, hashpassword))
+                if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.HashPassword))
                 {
-                    User? user = await _userRepository.GetByEmailAsync(dto.Email);
-                    await _logger.LogAsync(user?.Id, "Mot de passe incorrect lors du login.");
+                    await _logger.LogAsync(user.Id, "Mot de passe incorrect lors du login.");
                     throw new IncorrectPasswordException();
                 }
 
-                User? userSuccess = await _userRepository.GetByEmailAsync(dto.Email);
-                if (userSuccess == null)
-                {
-                    await _logger.LogAsync(null, "Utilisateur introuvable après vérification du mot de passe.");
-                    throw new UserNotFoundException();
-                }
-
-                await _logger.LogAsync(userSuccess.Id, "Connexion réussie.");
-                return _mapper.Map<UserDTO>(userSuccess);
+                await _logger.LogAsync(user.Id, "Connexion réussie.");
+                return _mapper.Map<UserDTO>(user);
             }
             catch (Exception ex)
             {
                 await _logger.LogAsync(null, $"Erreur inattendue lors du login : {ex.Message}");
-                throw; 
+                throw;
             }
         }
 
@@ -151,10 +143,25 @@ namespace Haelya.Application.Services
                 throw new UserNotFoundException();
             }
 
-            existingUser.FirstName = dto.FirstName;
-            existingUser.LastName = dto.LastName;
-            existingUser.PhoneNumber = dto.PhoneNumber;
-            existingUser.BirthDate = dto.BirthDate;
+            if (!string.IsNullOrWhiteSpace(dto.FirstName))
+            {
+                existingUser.FirstName = dto.FirstName;
+            }
+                
+            if (!string.IsNullOrWhiteSpace(dto.LastName))
+            {
+                existingUser.LastName = dto.LastName;
+            }                
+
+            if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
+            {
+                existingUser.PhoneNumber = dto.PhoneNumber;
+            }
+
+            if (dto.BirthDate.HasValue)
+            {                
+                existingUser.BirthDate = dto.BirthDate.Value;
+            }
 
             await _userRepository.UpdateAsync(existingUser);
             await _logger.LogAsync(existingUser.Id, $"Utilisateur mis à jour avec succès");

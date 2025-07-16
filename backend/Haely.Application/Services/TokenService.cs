@@ -5,24 +5,27 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Haelya.Shared.Settings;
+using Microsoft.Extensions.Options;
+
 
 
 namespace Haelya.Application.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly IConfiguration _configuration;
+        private readonly JwtSettings _jwtSettings;
 
-        public TokenService(IConfiguration configuration)
+        public TokenService(IOptions<JwtSettings> options)
         {
-            _configuration = configuration;
+            _jwtSettings = options.Value;
         }
         public string GenerateToken(UserDTO user)
         {
-            var secret = _configuration["Jwt:Key"];
-            var issuer = _configuration["Jwt:Issuer"];
-            var audience = _configuration["Jwt:Audience"];
-            var expiresInMinutes = int.Parse(_configuration["Jwt:ExpiresInMinutes"] ?? "60");
+            var secret = _jwtSettings.Key;
+            var issuer = _jwtSettings.Issuer;
+            var audience = _jwtSettings.Audience;
+            var expiresInMinutes = _jwtSettings.ExpiresInMinutes;
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

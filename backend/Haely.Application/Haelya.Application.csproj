@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Haelya.Domain\Haelya.Domain.csproj" />
+	 <ProjectReference Include="..\Haelya.Shared\Haelya.Shared.csproj" />
   </ItemGroup>
 
 </Project>

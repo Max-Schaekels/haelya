@@ -1,5 +1,4 @@
 using Haelya.Infrastructure;
-using Haelya.Shared.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -17,6 +16,7 @@ using Haelya.Infrastructure.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Haelya.Shared.Settings;
+using Haelya.Application.Mappers;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,13 +47,42 @@ builder.Services.AddDbContext<HaelyaDbContext>(options =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new() { Title = "Haelya API", Version = "v1" });
+
+    // Définition du schéma JWT Bearer
+    options.AddSecurityDefinition("Bearer", new()
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Entrez 'Bearer {token}' dans le champ ci-dessous."
+    });
+
+    // Application du schéma globalement
+    options.AddSecurityRequirement(new()
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 builder.Services.Configure<JwtSettings>(jwtSettings);
-var secret = jwtSettings["Key"];
-var issuer = jwtSettings["Issuer"];
-var audience = jwtSettings["Audience"];
+
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
@@ -65,9 +94,11 @@ builder.Services.AddAuthentication("Bearer")
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
 
-            ValidIssuer = issuer,
-            ValidAudience = audience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
+            ),
             ClockSkew = TimeSpan.Zero // optionnel, réduit le délai de tolérance
         };
     });

@@ -13,12 +13,13 @@ namespace Haelya.Application.Validators.User
         public UpdateUserDTOValidator() 
         {
             RuleFor(x => x.FirstName)
-                .NotEmpty().WithMessage("Le prénom est requis.")
-                .MaximumLength(50);
+                .MaximumLength(50)
+                .When(x => !string.IsNullOrWhiteSpace(x.FirstName));
+            
 
             RuleFor(x => x.LastName)
-                .NotEmpty().WithMessage("Le nom est requis.")
-                .MaximumLength(50);
+                .MaximumLength(50)
+                .When(x => !string.IsNullOrWhiteSpace(x.LastName));
 
             RuleFor(x => x.PhoneNumber)
                 .Matches(@"^\+?[0-9]{7,15}$")

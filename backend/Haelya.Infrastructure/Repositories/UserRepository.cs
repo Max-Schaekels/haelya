@@ -32,9 +32,15 @@ namespace Haelya.Infrastructure.Repositories
             {
                 throw new KeyNotFoundException("User not found");
             }
-           
-            _context.Users.Remove(user);
+
+
+            user.FirstName = "Supprimé";
+            user.LastName = "Utilisateur";
+            user.Email = $"deleted_user_{id}@anonyme.local";
+            user.PhoneNumber = null;
+            user.BirthDate = null;
             await _context.SaveChangesAsync();
+            
 
         }
 

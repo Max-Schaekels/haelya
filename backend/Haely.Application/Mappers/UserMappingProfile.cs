@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Haelya.Shared.Mappers
+namespace Haelya.Application.Mappers
 {
     public class UserMappingProfile : Profile
     {
-        public UserMappingProfile() 
+        public UserMappingProfile()
         {
             CreateMap<RegisterDTO, User>()
                 .ForMember(dest => dest.HashPassword, opt => opt.Ignore())
@@ -27,7 +27,7 @@ namespace Haelya.Shared.Mappers
                 .ForMember(dest => dest.RegisterDate, opt => opt.Ignore())
                 .ForMember(dest => dest.Role, opt => opt.Ignore());
 
-            
+
         }
     }
 }

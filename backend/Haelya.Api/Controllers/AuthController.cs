@@ -1,5 +1,6 @@
 ﻿using Haelya.Application.DTOs.User;
 using Haelya.Application.Interfaces;
+using Haelya.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +11,12 @@ namespace Haelya.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
 
-        public AuthController(IUserService userService)
+        public AuthController(IUserService userService, ITokenService tokenService)
         {
             _userService = userService;
+            _tokenService = tokenService;
         }
 
         [HttpPost(nameof(Register))]
@@ -35,8 +38,12 @@ namespace Haelya.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            await _userService.LoginAsync(dto);
-            return Ok(dto);
+
+            UserDTO user = await _userService.LoginAsync(dto); // Doit renvoyer un UserDTO
+            string token = _tokenService.GenerateToken(user);
+
+            return Ok(new { token });
+
         }
     }
 }
