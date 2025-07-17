@@ -29,9 +29,14 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets"
             ],
             "styles": [
+              "src/assets/css/normalize.css",
+              "src/assets/css/vendor.css",
+              "src/assets/css/style.css",
+              "src/assets/css/icomoon.css",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -102,6 +107,10 @@
               }
             ],
             "styles": [
+              "src/assets/css/normalize.css",
+              "src/assets/css/vendor.css",
+              "src/assets/css/style.css",
+              "src/assets/css/icomoon.css",
               "src/styles.scss"
             ],
             "scripts": []
