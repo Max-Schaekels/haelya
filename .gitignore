@@ -112,6 +112,9 @@ frontend/haelya-front/.sass-cache/
 frontend/haelya-front/typings/
 frontend/haelya-front/connect.lock
 
+#sensitive env files
+frontend/haelya-front/src/environments/environment.prod.ts
+
 # IDEs and editors
 frontend/haelya-front/.idea/
 frontend/haelya-front/.project
