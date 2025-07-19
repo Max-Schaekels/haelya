@@ -1,0 +1,37 @@
+
+<div class="carousel-wrapper">
+    <!-- Flèche gauche -->
+    <button class="custom-prev slick-arrow">
+        <i class="icon icon-arrow-left"></i>
+    </button>
+
+        <!-- Flèche droite -->
+    <button class="custom-next slick-arrow">
+        <i class="icon icon-arrow-right"></i>
+    </button>
+
+    <swiper-container 
+        navigation-prev-el=".custom-prev"
+        navigation-next-el=".custom-next"
+        slides-per-view="1" 
+        navigation="true" 
+        pagination="true" 
+        autoplay-delay="15000" 
+        loop="true" 
+        class="main-slider pattern-overlay">
+        <swiper-slide *ngFor="let slide of slides">
+        <div class="slide-inner">
+            <div class="content">
+                <h2>{{ slide.title }}</h2>
+                <p>{{ slide.text }}</p>
+                <a href="#" class="btn">READ MORE →</a>
+            </div>
+            <div class="image">
+                <img [src]="slide.img" [alt]="slide.title" />
+            </div>
+        </div>
+        </swiper-slide>
+    </swiper-container>
+
+
+</div>

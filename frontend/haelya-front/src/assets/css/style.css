@@ -1866,52 +1866,6 @@ img.post-image {
   margin: 0 0 30px 0;
 }
 
-#billboard .slick-dots {
-  left: 200px;
-  bottom: 110px;
-  width: 10%;
-  text-align: inherit;
-}
-
-#billboard button.slick-arrow {
-  background: transparent;
-  border: 1px solid #E5E3DA;
-  padding: initial;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  z-index: 5;
-  cursor: pointer;
-}
-
-#billboard button.slick-arrow:hover {
-  border: 1px solid #74642F;
-  background-color: #E5E3DA;
-}
-
-#billboard button.prev.slick-arrow {
-  left: 110px;
-}
-
-#billboard button.next.slick-arrow {
-  right: 110px;
-}
-
-#billboard .slick-arrow i.icon {
-  color: #8C8C8C;
-}
-
-@media screen and (max-width: 1366px) {
-  #billboard button.prev.slick-arrow {
-    left: 0;
-  }
-
-  #billboard button.next.slick-arrow {
-    right: 0;
-  }
-}
 
 @media screen and (max-width: 999px) {
   .banner-content h2.banner-title {
@@ -2440,4 +2394,41 @@ footer#footer {
   .products-grid .product-style {
     width: 100%;
   }
+}
+
+/*
+.product-style {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  padding: 1rem;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.product-style img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 1rem;
+}*/
+
+figure.product-style {
+  max-height: 400px; /* tu peux ajuster selon ton besoin */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+figure.product-style img {
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
 }

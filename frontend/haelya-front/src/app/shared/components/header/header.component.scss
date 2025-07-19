@@ -1,0 +1,193 @@
+.is-sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: slideInDown 0.3s ease-in-out;
+}
+
+/* === BURGER MENU === */
+
+.hamburger {
+  display: none;
+
+  @media (max-width: 991px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+
+    position: absolute;
+    right: 20px;
+    top: -40px; // ✅ changé ici (au lieu de 50%)
+    transform: none; // ✅ supprimé car on n'utilise plus translateY
+
+    z-index: 1001;
+
+    span {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: #000;
+      transition: all 0.3s ease;
+    }
+
+    &.active span:nth-child(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    &.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    &.active span:nth-child(3) {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+  }
+}
+
+
+/* === MENU LIST VISIBLE ONLY IF ACTIVE === */
+
+.main-menu {
+  position: relative;
+
+  @media (max-width: 991px) {
+    .menu-list {
+      display: none;
+    }
+
+    &.active .menu-list {
+      display: block;
+    }
+  }
+}
+
+#navbar {
+  position: relative;
+}
+
+.right-element {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  height: 32px;
+  line-height: 1;
+}
+
+.search-input {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  height: 100%;
+  padding: 4px 10px;
+  font-size: 14px;
+  width: 160px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e6e6e6;
+
+  &:focus {
+    outline: none;
+    border-color: #999;
+  }
+}
+
+.search-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  i {
+    font-size: 16px;
+    color: #333; // 
+  }
+
+  &:hover i {
+    color: #f0a500; // 
+  }
+}
+
+.menu-item.has-sub ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #f9f8f3;
+  min-width: 180px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.menu-item.has-sub.open ul {
+  display: block;
+  padding: 8px 0;
+  border-radius: 4px;
+}
+
+@media (max-width: 991px) {
+  .menu-item.has-sub {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+
+    >ul {
+      display: none;
+      position: static;
+      background-color: #f9f8f3; // même fond que le reste
+      margin: 8px 0 0 0;
+      padding: 0;
+      box-shadow: none;
+      border-radius: 0;
+
+      li {
+        padding: 10px 16px;
+        border-bottom: 1px solid #eee;
+
+        a {
+          color: #333;
+          font-size: 14px;
+        }
+      }
+    }
+
+    &.open>ul {
+      display: block;
+    }
+
+    >a::after {
+      content: "▼";
+      float: right;
+      font-size: 0.6rem;
+      margin-left: 8px;
+    }
+  }
+}
