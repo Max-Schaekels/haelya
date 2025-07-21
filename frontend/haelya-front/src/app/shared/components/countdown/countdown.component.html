@@ -1,0 +1,13 @@
+<div class="countdown-wrapper" *ngIf="!isExpired(); else expired">
+  <p class="message">{{ message }}</p>
+  <p class="time">
+    {{ duration().days }}j
+    {{ duration().hours }}h
+    {{ duration().minutes }}m
+    {{ duration().seconds }}s
+  </p>
+</div>
+
+<ng-template #expired>
+  <p class="expired">{{ expiredMessage }}</p>
+</ng-template>

@@ -1,0 +1,26 @@
+.countdown-wrapper {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  color: #78350f;
+
+  .message {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .time {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: 0.5rem;
+  }
+}
+
+.expired {
+  text-align: center;
+  color: #991b1b;
+  font-weight: bold;
+}
