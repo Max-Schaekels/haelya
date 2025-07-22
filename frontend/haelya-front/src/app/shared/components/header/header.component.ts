@@ -1,9 +1,10 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { StickyHeaderDirective } from '../../directives/sticky-header.directive';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [StickyHeaderDirective],
+  imports: [StickyHeaderDirective, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
