@@ -13,6 +13,9 @@ SwiperCore.use([Navigation, Pagination, Autoplay]);
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  host:{
+    'ngSkipHydration' :''
+  }
 })
 export class CarouselComponent  {
   isBrowser: boolean = false;
@@ -31,6 +34,7 @@ export class CarouselComponent  {
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
       img: '/assets/images/main-banner2.jpg'
     }
+    
   ];
 
 

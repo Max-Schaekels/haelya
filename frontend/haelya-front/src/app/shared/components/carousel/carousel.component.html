@@ -1,23 +1,23 @@
 
 <div class="carousel-wrapper">
-    <!-- Flèche gauche -->
+    
     <button class="custom-prev slick-arrow">
         <i class="icon icon-arrow-left"></i>
     </button>
 
-        <!-- Flèche droite -->
+        
     <button class="custom-next slick-arrow">
         <i class="icon icon-arrow-right"></i>
     </button>
 
-    <swiper-container 
+    <swiper-container
         navigation-prev-el=".custom-prev"
         navigation-next-el=".custom-next"
         slides-per-view="1" 
         navigation="true" 
         pagination="true" 
         autoplay-delay="15000" 
-        loop="true" 
+        [loop]="slides.length > 2" 
         class="main-slider pattern-overlay">
         <swiper-slide *ngFor="let slide of slides">
         <div class="slide-inner">
