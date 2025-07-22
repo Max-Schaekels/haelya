@@ -1,6 +1,7 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, ViewChild } from '@angular/core';
 import { StickyHeaderDirective } from '../../directives/sticky-header.directive';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,7 @@ export class HeaderComponent {
   isMenuOpen: boolean = false;
   isSearchActive: boolean = false;
   isDropdownOpen: string | null = null;
+  public authService : AuthService = inject(AuthService);
 
   @ViewChild('searchInput') searchInput!: ElementRef;
 
@@ -53,6 +55,10 @@ export class HeaderComponent {
     if (this.isDropdownOpen === id) {
       this.isDropdownOpen = null;
     }
+  }
+
+  logout():void{
+    this.authService.logout();
   }
 
 }

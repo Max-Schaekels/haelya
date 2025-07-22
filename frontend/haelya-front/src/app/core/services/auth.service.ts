@@ -32,7 +32,7 @@ export class AuthService {
   constructor() { }
 
   login(login : Login){
-    return this._http.post<{ token: string}>(`${this._apiUrl}/Auth/Login`, {login})
+    return this._http.post<{ token: string}>(`${this._apiUrl}/Auth/Login`, login)
   }
 
   register( register : Register){

@@ -106,6 +106,7 @@
     }
 
     .search-button {
+      margin-top: 1px;
       background-color: transparent;
       border: none;
       padding: 0;
@@ -317,5 +318,39 @@
     .hamburger {
       display: none;
     }
+  }
+}
+
+.user-greeting {
+  display: inline-block;
+  margin-right: 1rem;
+  font-weight: 500;
+
+  a {
+    color: #000;
+    text-decoration: none;
+    margin-left: 0.3rem;
+
+    &:hover {
+      color: #e2b842; // couleur dorée Booksaw
+    }
+  }
+}
+
+.user-account {
+  margin-left: 0.8rem;
+  font-weight: 500;
+  cursor: default;
+
+  &.logout {
+    cursor: pointer;
+
+    &:hover {
+      color: #e2b842;
+    }
+  }
+
+  span {
+    padding-left: 0.3rem;
   }
 }

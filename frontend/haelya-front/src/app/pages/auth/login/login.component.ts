@@ -30,8 +30,10 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.invalid) return;
-    const { email, password } = this.loginForm.value;
-    const userLogin: Login = { Email: email, Password: password };
+    const userLogin: Login = {
+      Email: this.loginForm.get('email')?.value,
+      Password: this.loginForm.get('password')?.value
+    };
     this.authService.login(userLogin).subscribe({
       next: ({ token }) => {
         this.authService.saveAuth(token);
@@ -69,5 +71,5 @@ export class LoginComponent {
   }
 
 }
- 
+
 

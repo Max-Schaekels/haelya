@@ -32,7 +32,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpPost(nameof(Login))]
-        public async Task<IActionResult> Login(LoginDTO dto)
+        public async Task<IActionResult> Login([FromBody]LoginDTO dto)
         {
             if (!ModelState.IsValid)
             {
