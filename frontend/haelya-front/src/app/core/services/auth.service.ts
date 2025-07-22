@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   register( register : Register){
-    return this._http.post<void>(`${this._apiUrl}/Auth/Register`, {register})
+    return this._http.post<void>(`${this._apiUrl}/Auth/Register`, register)
   }
 
     saveAuth(token: string) {

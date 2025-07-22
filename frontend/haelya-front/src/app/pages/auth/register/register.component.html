@@ -1,0 +1,108 @@
+<section class="container py-5">
+  <h1 class="text-center mb-4">Créer un compte</h1>
+
+  <form [formGroup]="registerForm" class="register-form mx-auto" style="max-width: 600px;" (ngSubmit)="onSubmit()">
+    
+    <!-- Prénom -->
+    <div class="form-group mb-3">
+      <label for="firstName">Prénom</label>
+      <input id="firstName" type="text" formControlName="firstName" class="form-control" />
+      @if (registerForm.get('firstName')?.touched && registerForm.get('firstName')?.errors?.['required']) {
+        <div class="form-error">Ce champ est requis</div>
+      }
+      @if (registerForm.get('firstName')?.errors?.['maxlength']) {
+        <div class="form-error">Max 55 caractères</div>
+      }
+    </div>
+
+    <!-- Nom -->
+    <div class="form-group mb-3">
+      <label for="lastName">Nom</label>
+      <input id="lastName" type="text" formControlName="lastName" class="form-control" />
+      @if (registerForm.get('lastName')?.touched && registerForm.get('lastName')?.errors?.['required']) {
+        <div class="form-error">Ce champ est requis</div>
+      }
+      @if (registerForm.get('lastName')?.errors?.['maxlength']) {
+        <div class="form-error">Max 55 caractères</div>
+      }
+    </div>
+
+    <!-- Email -->
+    <div class="form-group mb-3">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" class="form-control" />
+      @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']) {
+        <div class="form-error">Ce champ est requis</div>
+      }
+      @if (registerForm.get('email')?.errors?.['email']) {
+        <div class="form-error">Email invalide</div>
+      }
+    </div>
+
+    <!-- Mot de passe -->
+    <div class="form-group mb-3">
+      <label for="password">Mot de passe</label>
+      <input id="password" type="password" formControlName="password" class="form-control" />
+      @if (registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']) {
+        <div class="form-error">Ce champ est requis</div>
+      }
+      @if (registerForm.get('password')?.errors?.['pattern']) {
+        <div class="form-error"> Le mot de passe doit contenir au moins 8 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial.</div>
+      }
+    </div>
+
+    <!-- Confirmation -->
+    <div class="form-group mb-3">
+      <label for="confirm">Confirmer le mot de passe</label>
+      <input id="confirm" type="password" formControlName="confirm" class="form-control" />
+      @if (registerForm.get('confirm')?.touched && registerForm.get('confirm')?.errors?.['required']) {
+        <div class="form-error">Ce champ est requis</div>
+      }
+      @if (registerForm.errors?.['checkpassword']) {
+        <div class="form-error">Les mots de passe ne correspondent pas</div>
+      }
+    </div>
+
+    <!-- Téléphone -->
+    <div class="form-group mb-3">
+      <label for="phoneNumber">Téléphone (facultatif)</label>
+      <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control" />
+    </div>
+
+    <!-- Date de naissance -->
+    <div class="form-group mb-3">
+      <label for="birthDate">Date de naissance (facultatif)</label>
+      <input id="birthDate" type="date" formControlName="birthDate" class="form-control" />
+      @if (registerForm.get('birthDate')?.errors?.['futureDate']) {
+        <div class="form-error">La date ne peut pas être dans le futur</div>
+      }
+    </div>
+
+    <!-- Conditions -->
+    <div class="form-check mb-4">
+      <input id="conditions" type="checkbox" formControlName="conditions" class="form-check-input" />
+      <label for="conditions" class="form-check-label">
+        J’accepte les conditions d’utilisation.
+      </label>
+      @if (registerForm.get('conditions')?.touched && registerForm.get('conditions')?.errors?.['required']) {
+        <div class="form-error">Vous devez accepter les conditions</div>
+      }
+    </div>
+
+    <!-- Message d'erreur global -->
+    @if (errorMessage) {
+      <div class="form-error text-center mb-3">{{ errorMessage }}</div>
+    }
+
+
+    <!-- Bouton -->
+    <div class="text-center">
+      <button
+        type="submit"
+        class="btn btn-dark px-5 py-2"
+        [disabled]="registerForm.invalid || isSubmitting ">
+        {{ isSubmitting ? 'Envoi...' : 'S’inscrire' }}
+      </button>
+    </div>
+  </form>
+</section>
