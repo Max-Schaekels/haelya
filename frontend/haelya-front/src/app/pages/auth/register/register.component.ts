@@ -4,6 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validatio
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { Register } from '../../../core/models/register';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +16,7 @@ export class RegisterComponent {
   private _fb: FormBuilder = inject(FormBuilder);
   private _authService: AuthService = inject(AuthService);
   private _routeur: Router = inject(Router);
+  private _toastService : ToastService = inject(ToastService);
 
   isSubmitting = false;
   errorMessage: string | null = null;
@@ -81,6 +83,7 @@ export class RegisterComponent {
         this.registerForm.reset();
         this.errorMessage = null;        
         this._routeur.navigate(['login']);
+        this._toastService.showToast('Inscription réussie ! Vous pouvez vous connecté !')
       },
       error: (err) => {
 

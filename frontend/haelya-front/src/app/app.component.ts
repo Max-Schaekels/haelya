@@ -5,11 +5,12 @@ import { HeaderComponent } from "./shared/components/header/header.component";
 import { FooterComponent } from "./shared/components/footer/footer.component";
 import { isPlatformBrowser } from '@angular/common';
 import { filter } from 'rxjs';
+import { ToastComponent } from "./shared/components/toast/toast.component";
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ScrollToTopComponent, HeaderComponent, FooterComponent],
+  imports: [RouterOutlet, ScrollToTopComponent, HeaderComponent, FooterComponent, ToastComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

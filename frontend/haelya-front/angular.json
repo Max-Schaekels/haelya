@@ -37,6 +37,7 @@
               "src/assets/css/normalize.css",
               "src/assets/css/style.css",
               "src/assets/css/icomoon.css",
+              "node_modules/ngx-toastr/toastr.css",
               "src/styles.scss",
               "node_modules/swiper/swiper.min.css"
             ],
