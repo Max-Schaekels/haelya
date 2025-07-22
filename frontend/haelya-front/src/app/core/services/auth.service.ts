@@ -6,10 +6,13 @@ import { User } from '../models/user';
 import { Login } from '../models/login';
 import { Register } from '../models/register';
 import { UserRole } from '../models/user-role';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
-interface TokenPayload{
-  role : UserRole
+interface TokenPayload {
+  'http://schemas.microsoft.com/ws/2008/06/identity/claims/role': string;
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress': string;
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname': string;
+  [key: string]: unknown;
 }
 
 @Injectable({
@@ -31,18 +34,27 @@ export class AuthService {
 
   constructor() { }
 
-  login(login : Login){
-    return this._http.post<{ token: string}>(`${this._apiUrl}/Auth/Login`, login)
+  login(login: Login) {
+    return this._http.post<{ token: string; }>(`${this._apiUrl}/Auth/Login`, login);
   }
 
-  register( register : Register){
-    return this._http.post<void>(`${this._apiUrl}/Auth/Register`, register)
+  register(register: Register) {
+    return this._http.post<void>(`${this._apiUrl}/Auth/Register`, register);
   }
 
-    saveAuth(token: string) {
+  saveAuth(token: string) {
     localStorage.setItem(this.TOKEN_KEY, token);
+
+    const decoded = this.decodeToken();
+    const role = this.getRole();
+
+    console.log('🔐 Token reçu :', token);
+    console.log('🧩 Payload décodé :', decoded);
+    console.log('🎭 Rôle après getRole() :', role);
+    console.log('🛂 Est admin ? :', role === UserRole.Admin);
+
     this.isConnectedSignal.set(true);
-    this.isAdminSignal.set(this.decodeToken()?.role=== UserRole.Admin);
+    this.isAdminSignal.set(role === UserRole.Admin);
   }
 
   logout() {
@@ -56,9 +68,9 @@ export class AuthService {
     return typeof window !== 'undefined' ? localStorage.getItem(this.TOKEN_KEY) : null;
   }
 
-  decodeToken() : TokenPayload | null{
+  decodeToken(): TokenPayload | null {
     const token = this.getToken();
-    if (!token){
+    if (!token) {
       return null;
     }
     try {
@@ -70,8 +82,32 @@ export class AuthService {
 
 
   getRole(): UserRole | null {
-    return this.decodeToken()?.role ?? null;
+    const decoded = this.decodeToken();
+    if (!decoded) return null;
+
+    const rawRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]?.toLowerCase();
+    if (!rawRole) return null;
+
+    switch (rawRole) {
+      case 'admin':
+        return UserRole.Admin;
+      case 'customer':
+        return UserRole.Customer;
+      default:
+        console.warn('❌ Rôle inconnu :', rawRole);
+        return null;
+    }
   }
+
+  getFirstName(): string | null {
+  const token = this.decodeToken();
+  return token?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'] ?? null;
+}
+
+getEmail(): string | null {
+  const token = this.decodeToken();
+  return token?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ?? null;
+}
 
 
   private hasToken(): boolean {
