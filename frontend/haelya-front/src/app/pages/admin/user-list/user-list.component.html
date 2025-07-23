@@ -1,0 +1,32 @@
+<h2>Gestion des utilisateurs</h2>
+
+@if (loading) {
+  <p>Chargement des utilisateurs...</p>
+} @else {
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  } @else {
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Email</th>
+          <th class="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user.id) {
+          <tr>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.email }}</td>
+            <td class="actions">
+              <a [routerLink]="['/admin/utilisateurs', user.id]" class="btn btn-detail">🔍Détails</a>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+}

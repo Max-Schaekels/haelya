@@ -10,7 +10,7 @@ import { ToastComponent } from "./shared/components/toast/toast.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ScrollToTopComponent, HeaderComponent, FooterComponent, ToastComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

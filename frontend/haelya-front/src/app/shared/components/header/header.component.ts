@@ -2,6 +2,7 @@ import { Component, ElementRef, HostListener, inject, ViewChild } from '@angular
 import { StickyHeaderDirective } from '../../directives/sticky-header.directive';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { LoginComponent } from "../../../pages/auth/login/login.component";
 
 @Component({
   selector: 'app-header',

@@ -1,0 +1,22 @@
+
+<div class="admin-layout">
+  <aside class="sidebar">
+    <nav>
+      <ul>
+        <li><a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a></li>
+        <li><a routerLink="/admin/utilisateurs" routerLinkActive="active">Utilisateurs</a></li>
+        <li><a routerLink="/admin/produits" routerLinkActive="active">Produits</a></li>
+        <li><a routerLink="/admin/commandes" routerLinkActive="active">Commandes</a></li>
+        <li><a routerLink="" routerLinkActive="active">Retour au site</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main-content">
+    <header class="topbar">
+      <h1>Espace administrateur</h1>
+    </header>
+    <main>
+      <router-outlet />
+    </main>
+  </div>
+</div>

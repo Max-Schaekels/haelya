@@ -48,11 +48,6 @@ export class AuthService {
     const decoded = this.decodeToken();
     const role = this.getRole();
 
-    console.log('🔐 Token reçu :', token);
-    console.log('🧩 Payload décodé :', decoded);
-    console.log('🎭 Rôle après getRole() :', role);
-    console.log('🛂 Est admin ? :', role === UserRole.Admin);
-
     this.isConnectedSignal.set(true);
     this.isAdminSignal.set(role === UserRole.Admin);
   }
@@ -94,7 +89,6 @@ export class AuthService {
       case 'customer':
         return UserRole.Customer;
       default:
-        console.warn('❌ Rôle inconnu :', rawRole);
         return null;
     }
   }
