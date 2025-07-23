@@ -37,7 +37,7 @@
                         }
                         @if (authService.isConnected()) {
                         <div class="user-account user-greeting for-buy">
-                            Bonjour, <a routerLink="/profil"><span>{{authService.getFirstName()}}</span></a>
+                            Bonjour, <a routerLink="/dashboard"><span>{{authService.getFirstName()}}</span></a>
                         </div>
                         <a (click)="logout()" class="user-account logout">Déconnexion</a>
 

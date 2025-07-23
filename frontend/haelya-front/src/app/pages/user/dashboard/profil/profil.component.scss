@@ -1,0 +1,136 @@
+:host {
+  display: block;
+  background-color: #f4f1ec; // fond plus contrasté (comme Booksaw)
+  padding-top: 2rem;
+}
+
+.profil-card {
+  max-width: 700px;
+  margin-left: 2rem; // aligné à gauche
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  background-color: #fff;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+  animation: fadeIn 0.4s ease-in;
+
+  @media (max-width: 768px) {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.2rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.profil-form,
+.profil-infos {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group {
+  label {
+    font-size: 0.88rem;
+    color: #444;
+    margin-bottom: 0.35rem;
+    display: block;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.45rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    background-color: #fafafa;
+
+    &:focus {
+      border-color: #c6a991;
+      outline: none;
+      background-color: #fff;
+    }
+  }
+}
+
+.form-error {
+  color: #c0392b;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  button {
+    padding: 0.45rem 1.2rem;
+    font-size: 0.88rem;
+    border: none;
+    border-radius: 999px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:first-child {
+      background-color: #222;
+      color: #fff;
+
+      &:hover {
+        background-color: #000;
+      }
+    }
+
+    &:last-child {
+      background-color: #eee;
+      color: #333;
+
+      &:hover {
+        background-color: #ddd;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.profil-infos {
+  p {
+    font-size: 0.94rem;
+    color: #333;
+
+    strong {
+      color: #555;
+    }
+  }
+
+  button {
+    align-self: flex-start;
+    padding: 0.5rem 1.4rem;
+    border-radius: 999px;
+    font-weight: 500;
+    background-color: #c6a991;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: #b08972;
+    }
+  }
+}

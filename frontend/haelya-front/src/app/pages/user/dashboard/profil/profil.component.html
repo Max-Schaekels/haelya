@@ -1,0 +1,61 @@
+<div class="profil-card" [@fadeInOut]>
+    @if (user && !isEditing) {
+    <div class="profil-infos">
+        <p><strong>Prénom </strong>: {{user.firstName}}</p>
+        <p><strong>Nom</strong> : {{user.lastName}}</p>
+        <p><strong>N° de téléphone</strong> : {{user.phoneNumber || '-'}}</p>
+        <p><strong>Date de naissance</strong> : {{ user.birthDate ? (user.birthDate | date: 'dd/MM/yyyy') : '-' }}</p>
+        <button (click)="enableEdit()">Modifier</button>
+    </div>
+    }
+
+    @if (isEditing) {
+    <form [formGroup]="updateProfilForm" (ngSubmit)="onSubmit()" class="profil-form">
+        <!-- Prénom -->
+        <div class="form-group mb-3">
+            <label for="firstName">Prénom</label>
+            <input id="firstName" type="text" formControlName="firstName" class="form-control" />
+            @if (updateProfilForm.get('firstName')?.touched && updateProfilForm.get('firstName')?.errors?.['required'])
+            {
+            <div class="form-error">Ce champ est requis</div>
+            }
+            @if (updateProfilForm.get('firstName')?.errors?.['maxlength']) {
+            <div class="form-error">Max 55 caractères</div>
+            }
+        </div>
+
+        <!-- Nom -->
+        <div class="form-group mb-3">
+            <label for="lastName">Nom</label>
+            <input id="lastName" type="text" formControlName="lastName" class="form-control" />
+            @if (updateProfilForm.get('lastName')?.touched && updateProfilForm.get('lastName')?.errors?.['required']) {
+            <div class="form-error">Ce champ est requis</div>
+            }
+            @if (updateProfilForm.get('lastName')?.errors?.['maxlength']) {
+            <div class="form-error">Max 55 caractères</div>
+            }
+        </div>
+
+        <!-- Téléphone -->
+        <div class="form-group mb-3">
+            <label for="phoneNumber">Téléphone (facultatif)</label>
+            <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control" />
+        </div>
+
+        <!-- Date de naissance -->
+        <div class="form-group mb-3">
+            <label for="birthDate">Date de naissance (facultatif)</label>
+            <input id="birthDate" type="date" formControlName="birthDate" class="form-control" />
+            @if (updateProfilForm.get('birthDate')?.errors?.['futureDate']) {
+            <div class="form-error">La date ne peut pas être dans le futur</div>
+            }
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" [disabled]="updateProfilForm.invalid || isSubmitting">Enregistrer</button>
+            <button type="button" (click)="cancelEdit()">Annuler</button>
+        </div>
+    </form>
+
+    }
+</div>

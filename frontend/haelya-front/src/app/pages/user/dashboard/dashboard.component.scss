@@ -1,8 +1,14 @@
 .dashboard {
   .dashboard-title {
-    font-size: 1.8rem;
-    font-weight: 600;
+    font-size: 1.6rem;
+    font-weight: 400;
     color: #222;
+    font-family: 'Playfair Display', serif;
+
+    span {
+      font-weight: 700;
+      color: #c6a991;
+    }
   }
 
   .dashboard-nav {
@@ -36,5 +42,17 @@
 
   .dashboard-content {
     margin-top: 2rem;
+    
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-title {
+      font-size: 1.3rem;
+      text-align: center;
+    }
+
+    .dashboard-nav {
+      justify-content: center;
+    }
   }
 }
