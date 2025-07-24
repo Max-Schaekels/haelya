@@ -8,6 +8,7 @@ import { UpdateUser } from '../../../../core/models/update-user';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { ModalComponent } from "../../../../shared/components/modal/modal.component";
 
 export const fadeInOut = trigger('fadeInOut', [
   transition(':enter', [style({ opacity: 0 }), animate('300ms', style({ opacity: 1 }))]),
@@ -16,7 +17,7 @@ export const fadeInOut = trigger('fadeInOut', [
 
 @Component({
   selector: 'app-profil',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ModalComponent],
   templateUrl: './profil.component.html',
   styleUrl: './profil.component.scss',
   animations: [fadeInOut]
@@ -32,9 +33,14 @@ export class ProfilComponent implements OnInit {
   errorMessage: string | null = null;
   isEditing: boolean = false;
   confirmDelete: boolean = false;
+  isModalOpen = false;
 
   updateProfilForm!: FormGroup;
   user!: User;
+
+  openModal() {
+    this.isModalOpen = true;
+  }
 
 
   ngOnInit(): void {
