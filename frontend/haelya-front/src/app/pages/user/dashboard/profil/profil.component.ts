@@ -31,6 +31,7 @@ export class ProfilComponent implements OnInit {
   isSubmitting: boolean = false;
   errorMessage: string | null = null;
   isEditing: boolean = false;
+  confirmDelete: boolean = false;
 
   updateProfilForm!: FormGroup;
   user!: User;
@@ -118,6 +119,19 @@ export class ProfilComponent implements OnInit {
       firstName: this.user.firstName,
       phoneNumber: this.user.phoneNumber,
       birthDate: this.user.birthDate
+    });
+  }
+
+  deleteAccount() {
+    this.errorMessage = null;
+    this._userService.deleteAccount().subscribe({
+      next: () => {
+        this._toast.showToast('Le compte a été supprimé avec succès !');
+        this._authService.logout();
+      },
+      error: () => {
+        this.errorMessage = 'Erreur lors de la suppression du compte.';
+      }
     });
   }
 
