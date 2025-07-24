@@ -10,7 +10,7 @@ namespace Haelya.Application.Interfaces
     public interface IUserService
     {
         Task<UserDTO> RegisterAsync(RegisterDTO dto);
-        Task<UserDTO> LoginAsync(LoginDTO dto);
+        Task<LoginResponseDTO> LoginAsync(LoginDTO dto);
         Task<List<UserDTO>> GetAllAsync();
         Task<UserDTO> GetByIdAsync(long id);
         Task<UserDTO> GetByEmailAsync(string email);
@@ -18,6 +18,7 @@ namespace Haelya.Application.Interfaces
         Task UpdateAsync(long id, UpdateUserDTO dto);
         Task ChangePasswordAsync(long id, ChangePasswordDTO dto);
         Task DeleteAsync(long id);
+        Task<LoginResponseDTO> RefreshAsync(RefreshTokenRequestDTO dto);
 
     }
 }

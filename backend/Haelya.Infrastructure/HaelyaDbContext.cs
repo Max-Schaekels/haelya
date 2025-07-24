@@ -1,5 +1,7 @@
 ﻿using Haelya.Domain.Entities;
+using Haelya.Domain.Entities.Auth;
 using Haelya.Infrastructure.Configurations;
+using Haelya.Infrastructure.Configurations.Auth;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,10 +18,12 @@ namespace Haelya.Infrastructure
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }

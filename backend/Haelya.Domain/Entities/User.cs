@@ -1,4 +1,5 @@
-﻿using Haelya.Domain.Enums;
+﻿using Haelya.Domain.Entities.Auth;
+using Haelya.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace Haelya.Domain.Entities
         public DateTime? BirthDate { get; set; }
         public DateTime RegisterDate { get; set; }
         public Role Role { get; set; }
+        // Navigation entity framework : 
+        public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
     }
 }

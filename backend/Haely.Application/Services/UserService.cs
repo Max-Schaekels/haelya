@@ -3,7 +3,9 @@ using BCrypt.Net;
 using Haelya.Application.DTOs.User;
 using Haelya.Application.Exceptions;
 using Haelya.Application.Interfaces;
+using Haelya.Application.Interfaces.Auth;
 using Haelya.Domain.Entities;
+using Haelya.Domain.Entities.Auth;
 using Haelya.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,12 +18,16 @@ namespace Haelya.Application.Services
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
         private readonly ISecurityLogger _logger;
+        private readonly IRefreshTokenService _refreshTokenService;
+        private readonly ITokenService _tokenService;
 
-        public UserService(IUserRepository userRepository, IMapper maper, ISecurityLogger logger) 
+        public UserService(IUserRepository userRepository, IMapper maper, ISecurityLogger logger, IRefreshTokenService refreshTokenService, ITokenService tokenService) 
         {
             _userRepository = userRepository;
             _mapper = maper;
             _logger = logger;
+            _refreshTokenService = refreshTokenService;
+            _tokenService = tokenService;
         }
 
         public async Task ChangePasswordAsync(long id, ChangePasswordDTO dto)
@@ -45,6 +51,7 @@ namespace Haelya.Application.Services
             try
             {
                 await _userRepository.DeleteAsync(id);
+                await _refreshTokenService.DeleteAllByUserIdAsync(id);
                 await _logger.LogAsync(id, "Utilisateur anonymisé suite à une demande de suppression");
             }
             catch (Exception ex)
@@ -85,7 +92,7 @@ namespace Haelya.Application.Services
             return _mapper.Map<UserDTO>(user);
         }
 
-        public async Task<UserDTO> LoginAsync(LoginDTO dto)
+        public async Task<LoginResponseDTO> LoginAsync(LoginDTO dto)
         {
             try
             {
@@ -104,7 +111,19 @@ namespace Haelya.Application.Services
                 }
 
                 await _logger.LogAsync(user.Id, "Connexion réussie.");
-                return _mapper.Map<UserDTO>(user);
+
+                //Map
+                UserDTO userDto = _mapper.Map<UserDTO>(user);
+
+                //Tokens
+                string accessToken = _tokenService.GenerateToken(userDto);
+                RefreshToken refreshToken = await _refreshTokenService.GenerateTokenAsync(user.Id);
+                return new LoginResponseDTO
+                {
+                    User = userDto,
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken.Token
+                };
             }
             catch (Exception ex)
             {
@@ -166,6 +185,37 @@ namespace Haelya.Application.Services
             await _userRepository.UpdateAsync(existingUser);
             await _logger.LogAsync(existingUser.Id, $"Utilisateur mis à jour avec succès");
 
+        }
+
+        public async Task<LoginResponseDTO> RefreshAsync(RefreshTokenRequestDTO dto)
+        {
+            RefreshToken? tokenEntity = await _refreshTokenService.GetByTokenAsync(dto.RefreshToken);
+
+            if (tokenEntity == null || tokenEntity.IsRevoked || tokenEntity.ExpiresAt <= DateTime.UtcNow)
+            {
+                throw new RefreshTokenNotFoundException(dto.RefreshToken);
+            }
+
+            // Révoquer l'ancien token
+            await _refreshTokenService.RevokeAsync(dto.RefreshToken);
+
+            // Générer un nouveau token
+            RefreshToken newRefreshToken = await _refreshTokenService.GenerateTokenAsync(tokenEntity.UserId);
+
+            // Générer un nouvel access token
+            User? user = tokenEntity.User;
+            if (user == null)
+                throw new UserNotFoundException();
+
+            UserDTO userDto = _mapper.Map<UserDTO>(user);
+            string accessToken = _tokenService.GenerateToken(userDto);
+
+            return new LoginResponseDTO
+            {
+                User = userDto,
+                AccessToken = accessToken,
+                RefreshToken = newRefreshToken.Token
+            };
         }
     }
 }

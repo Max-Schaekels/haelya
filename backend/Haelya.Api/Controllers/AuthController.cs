@@ -1,6 +1,8 @@
 ﻿using Haelya.Application.DTOs.User;
 using Haelya.Application.Interfaces;
+using Haelya.Application.Interfaces.Auth;
 using Haelya.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +14,13 @@ namespace Haelya.Api.Controllers
     {
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
+        private readonly IRefreshTokenService _refreshTokenService;
 
-        public AuthController(IUserService userService, ITokenService tokenService)
+        public AuthController(IUserService userService, ITokenService tokenService, IRefreshTokenService refreshTokenService)
         {
             _userService = userService;
             _tokenService = tokenService;
+            _refreshTokenService = refreshTokenService;
         }
 
         [HttpPost(nameof(Register))]
@@ -32,18 +36,77 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpPost(nameof(Login))]
-        public async Task<IActionResult> Login([FromBody]LoginDTO dto)
+        [AllowAnonymous]
+        public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] LoginDTO dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            UserDTO user = await _userService.LoginAsync(dto); // Doit renvoyer un UserDTO
-            string token = _tokenService.GenerateToken(user);
+            LoginResponseDTO response = await _userService.LoginAsync(dto);
 
-            return Ok(new { token });
+            //  Ajouter le refresh token dans un cookie sécurisé
+            Response.Cookies.Append("refreshToken", response.RefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true, 
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(30),
+                Path = "/api/auth/refresh"
+            });
 
+
+            return Ok(new
+            {
+                user = response.User,
+                accessToken = response.AccessToken
+            });
+        }
+        
+        [HttpPost(nameof(Refresh))]
+        [AllowAnonymous]
+        public async Task<ActionResult<LoginResponseDTO>> Refresh()
+        {
+            string? refreshToken = Request.Cookies["refreshToken"];
+
+            if (string.IsNullOrWhiteSpace(refreshToken))
+                return Unauthorized(new { error = "Refresh token manquant" });
+
+            RefreshTokenRequestDTO dto = new RefreshTokenRequestDTO { RefreshToken = refreshToken };
+            LoginResponseDTO response = await _userService.RefreshAsync(dto);
+
+            // On remplace le cookie avec le nouveau refresh token (rotation)
+            Response.Cookies.Append("refreshToken", response.RefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(30),
+                Path = "/api/auth/refresh"
+            });
+
+            return Ok(new
+            {
+                user = response.User,
+                accessToken = response.AccessToken
+            });
+        }
+
+        [HttpPost(nameof(Logout))]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            string? refreshToken = Request.Cookies["refreshToken"];
+
+            if (!string.IsNullOrWhiteSpace(refreshToken))
+            {
+                await _refreshTokenService.RevokeAsync(refreshToken);
+            }
+
+            Response.Cookies.Delete("refreshToken");
+
+            return NoContent();
         }
     }
 }

@@ -43,6 +43,7 @@ namespace Haelya.Api.Middlewares
                 IncorrectPasswordException => HttpStatusCode.Unauthorized,
                 UnauthorizedActionException => HttpStatusCode.Forbidden,
                 UserAlreadyDeletedException => HttpStatusCode.Gone,
+                RefreshTokenNotFoundException => HttpStatusCode.NotFound,
                 _ => HttpStatusCode.InternalServerError
             };
 

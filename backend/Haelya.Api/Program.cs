@@ -1,22 +1,24 @@
-using Haelya.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Reflection;
 using AutoMapper;
 using FluentValidation;
-using Haelya.Application.DTOs.User;
-using Haelya.Application.Validators.User;
-using Haelya.Application.Interfaces;
-using Haelya.Application.Services;
-using Haelya.Infrastructure.Logging.Security;
 using Haelya.Api.Middlewares;
-using Haelya.Domain.Interfaces;
-using Haelya.Infrastructure.Repositories;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Haelya.Shared.Settings;
+using Haelya.Application.DTOs.User;
+using Haelya.Application.Interfaces;
+using Haelya.Application.Interfaces.Auth;
 using Haelya.Application.Mappers;
+using Haelya.Application.Services;
+using Haelya.Application.Services.Auth;
+using Haelya.Application.Validators.User;
+using Haelya.Domain.Interfaces;
+using Haelya.Infrastructure;
+using Haelya.Infrastructure.Logging.Security;
+using Haelya.Infrastructure.Repositories;
+using Haelya.Shared.Settings;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Reflection;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +36,8 @@ builder.Services.AddAutoMapper(cfg => {
 });
 
 //Services 
+builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ISecurityLogger, DummySecurityLogger>();
