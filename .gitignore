@@ -112,6 +112,7 @@ frontend/haelya-front/.sass-cache/
 frontend/haelya-front/typings/
 frontend/haelya-front/connect.lock
 
+
 #sensitive env files
 frontend/haelya-front/src/environments/environment.prod.ts
 
@@ -161,4 +162,4 @@ $RECYCLE.BIN/
 *.zip
 *.tar
 *.gz
-*.7z
+*.7zfrontend/haelya-front/ssl/
