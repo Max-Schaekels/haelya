@@ -37,7 +37,7 @@ export class AuthService {
   constructor() { }
 
   login(login: Login) {
-    return this._http.post<LoginResponse>(`${this._apiUrl}/Auth/Login`, login,{ withCredentials: true});
+    return this._http.post<LoginResponse>(`${this._apiUrl}/Auth/Login`, login, { withCredentials: true });
   }
 
   register(register: Register) {
@@ -54,7 +54,20 @@ export class AuthService {
     this.isAdminSignal.set(role === UserRole.Admin);
   }
 
-  logout() {
+  logout(): void {
+    this._http.post<void>(`${this._apiUrl}/Auth/Logout`, {}, { withCredentials: true })
+      .subscribe({
+        next: () => {
+          this._handleLogout(); // Appelle la méthode interne une fois le backend OK
+        },
+        error: err => {
+          console.error('Erreur lors du logout serveur :', err);
+          this._handleLogout(); // On déconnecte quand même localement
+        }
+      });
+  }
+
+  private _handleLogout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     this.isConnectedSignal.set(false);
     this.isAdminSignal.set(false);
@@ -114,24 +127,24 @@ export class AuthService {
     return this.getRole() === UserRole.Admin;
   }
 
-refreshToken(): Observable<LoginResponse> {
-  console.log('[AuthService] Tentative de refresh du token...'); // 👈 LOG
+  refreshToken(): Observable<LoginResponse> {
+    console.log('[AuthService] Tentative de refresh du token...'); // 👈 LOG
 
-  return this._http.post<LoginResponse>(`${this._apiUrl}/Auth/Refresh`, {}, {
-    withCredentials: true
-  }).pipe(
-    tap({
-      next: response => {
-        console.log('[AuthService] Refresh réussi. Nouveau token reçu.'); // 👈 LOG
-        this.saveAuth(response.accessToken);
-      },
-      error: err => {
-        console.warn('[AuthService] Échec du refresh token. Déconnexion forcée.', err); // 👈 WARN
-        this.logout();
-      }
-    })
-  );
-}
+    return this._http.post<LoginResponse>(`${this._apiUrl}/Auth/Refresh`, {}, {
+      withCredentials: true
+    }).pipe(
+      tap({
+        next: response => {
+          console.log('[AuthService] Refresh réussi. Nouveau token reçu.'); // 👈 LOG
+          this.saveAuth(response.accessToken);
+        },
+        error: err => {
+          console.warn('[AuthService] Échec du refresh token. Déconnexion forcée.', err); // 👈 WARN
+          this.logout();
+        }
+      })
+    );
+  }
 
 
 }

@@ -14,5 +14,6 @@ namespace Haelya.Domain.Interfaces
         Task SaveChangesAsync();
         Task<RefreshToken[]> GetAllByUserIdAsync(long userId);
         void RemoveRange(IEnumerable<RefreshToken> tokens);
+       
     }
 }

@@ -13,6 +13,7 @@ using Haelya.Infrastructure;
 using Haelya.Infrastructure.Logging.Security;
 using Haelya.Infrastructure.Repositories;
 using Haelya.Shared.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -104,6 +105,18 @@ builder.Services.AddAuthentication("Bearer")
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
             ),
             ClockSkew = TimeSpan.Zero // optionnel, réduit le délai de tolérance
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Cookies["AccessToken"];
+                if (!string.IsNullOrEmpty(accessToken))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
         };
     });
 
