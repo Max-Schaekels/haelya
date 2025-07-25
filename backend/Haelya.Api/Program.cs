@@ -33,10 +33,14 @@ builder.Services.AddScoped<IValidator<RegisterDTO>, RegisterDTOValidator>();
 //AutoMapper
 builder.Services.AddAutoMapper(cfg => {
     cfg.AddProfile(new UserMappingProfile());
+    cfg.AddProfile(new CategoryMappingProfile());
+    
     //add other line for more profiles
 });
 
 //Services 
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IUserService, UserService>();

@@ -34,7 +34,7 @@ namespace Haelya.Api.Middlewares
         {
             HttpStatusCode code = exception switch
             {
-                
+                CategoryNameAlreadyUsedException => HttpStatusCode.Conflict,
                 NotFoundException => HttpStatusCode.NotFound,
                 UnauthorizedAccessException => HttpStatusCode.Unauthorized,
                 EmailAlreadyUsedException => HttpStatusCode.Conflict,
