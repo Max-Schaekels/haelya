@@ -7,6 +7,8 @@ import { Login } from '../models/login';
 import { Register } from '../models/register';
 import { UserRole } from '../models/user-role';
 import { jwtDecode } from 'jwt-decode';
+import { LoginResponse } from '../models/login-response';
+import { Observable, tap } from 'rxjs';
 
 interface TokenPayload {
   'http://schemas.microsoft.com/ws/2008/06/identity/claims/role': string;
@@ -35,7 +37,7 @@ export class AuthService {
   constructor() { }
 
   login(login: Login) {
-    return this._http.post<{ token: string; }>(`${this._apiUrl}/Auth/Login`, login);
+    return this._http.post<LoginResponse>(`${this._apiUrl}/Auth/Login`, login,{ withCredentials: true});
   }
 
   register(register: Register) {
@@ -94,14 +96,14 @@ export class AuthService {
   }
 
   getFirstName(): string | null {
-  const token = this.decodeToken();
-  return token?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'] ?? null;
-}
+    const token = this.decodeToken();
+    return token?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'] ?? null;
+  }
 
-getEmail(): string | null {
-  const token = this.decodeToken();
-  return token?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ?? null;
-}
+  getEmail(): string | null {
+    const token = this.decodeToken();
+    return token?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ?? null;
+  }
 
 
   private hasToken(): boolean {
@@ -111,6 +113,25 @@ getEmail(): string | null {
   private hasAdminRole(): boolean {
     return this.getRole() === UserRole.Admin;
   }
+
+refreshToken(): Observable<LoginResponse> {
+  console.log('[AuthService] Tentative de refresh du token...'); // 👈 LOG
+
+  return this._http.post<LoginResponse>(`${this._apiUrl}/Auth/Refresh`, {}, {
+    withCredentials: true
+  }).pipe(
+    tap({
+      next: response => {
+        console.log('[AuthService] Refresh réussi. Nouveau token reçu.'); // 👈 LOG
+        this.saveAuth(response.accessToken);
+      },
+      error: err => {
+        console.warn('[AuthService] Échec du refresh token. Déconnexion forcée.', err); // 👈 WARN
+        this.logout();
+      }
+    })
+  );
+}
 
 
 }

@@ -51,7 +51,7 @@ namespace Haelya.Api.Controllers
             {
                 HttpOnly = true,
                 Secure = true, 
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddDays(30),
                 Path = "/api/auth/refresh"
             });
@@ -81,7 +81,7 @@ namespace Haelya.Api.Controllers
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddDays(30),
                 Path = "/api/auth/refresh"
             });

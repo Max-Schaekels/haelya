@@ -89,7 +89,10 @@
               "buildTarget": "haelya-front:build:production"
             },
             "development": {
-              "buildTarget": "haelya-front:build:development"
+              "buildTarget": "haelya-front:build:development",
+              "ssl": true,
+              "sslKey": "ssl/localhost.key",
+              "sslCert": "ssl/localhost.crt"
             }
           },
           "defaultConfiguration": "development"

@@ -35,8 +35,8 @@ export class LoginComponent {
       Password: this.loginForm.get('password')?.value
     };
     this.authService.login(userLogin).subscribe({
-      next: ({ token }) => {
-        this.authService.saveAuth(token);
+      next: ({ accessToken }) => {
+        this.authService.saveAuth(accessToken);
         this.redirectAfterLogin(this.authService.getRole());
 
       },
