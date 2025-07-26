@@ -33,6 +33,32 @@ namespace Haelya.Api.Controllers
             return Ok(dto);
         }
 
+        // POST: api/Category
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateCategory([FromBody] CategoryCreateDTO dto)
+        {
+            var created = await _categoryService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetCategory), new { id = created.Id }, created);
+        }
+
+        // PUT: api/Category/5
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryUpdateDTO dto)
+        {
+            await _categoryService.UpdateAsync(id, dto);
+            return NoContent();
+        }
+
+        // DELETE: api/Category/5 (désactivation logique)
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DisableCategory(int id)
+        {
+            await _categoryService.DisableAsync(id);
+            return NoContent();
+        }
 
 
     }
