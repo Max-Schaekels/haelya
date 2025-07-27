@@ -34,6 +34,7 @@ builder.Services.AddScoped<IValidator<RegisterDTO>, RegisterDTOValidator>();
 builder.Services.AddAutoMapper(cfg => {
     cfg.AddProfile(new UserMappingProfile());
     cfg.AddProfile(new CategoryMappingProfile());
+    cfg.AddProfile(new ProductMappingProfile());
     
     //add other line for more profiles
 });
