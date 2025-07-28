@@ -19,13 +19,13 @@ namespace Haelya.Api.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAllCategories()
+        public async Task<IActionResult> GetAllVisibleCategories()
         {
             IEnumerable<CategoryDTO> categories = await _categoryService.GetAllVisibleAsync();
             return Ok(categories);
         }
 
-        [HttpGet]
+        [HttpGet("admin")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllAdminCategories()
         {
