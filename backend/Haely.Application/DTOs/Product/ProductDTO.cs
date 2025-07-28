@@ -16,8 +16,11 @@ namespace Haelya.Application.DTOs.Product
         public decimal SupplierPrice { get; set; }
         public decimal Margin { get; set; }
         public int Stock { get; set; }
+        public string Slug { get; set; } = null!;
         public int CategoryId { get; set; }
         public string CategoryName { get; set; } = null!;
+        public int BrandId { get; set; }
+        public string BrandName { get; set; } = null!;
         public int ViewCount { get; set; }
         public decimal AvgNote { get; set; }
         public bool InSlide { get; set; }

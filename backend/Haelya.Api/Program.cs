@@ -1,12 +1,16 @@
 using AutoMapper;
 using FluentValidation;
 using Haelya.Api.Middlewares;
+using Haelya.Application.DTOs.Category;
+using Haelya.Application.DTOs.Product;
 using Haelya.Application.DTOs.User;
 using Haelya.Application.Interfaces;
 using Haelya.Application.Interfaces.Auth;
 using Haelya.Application.Mappers;
 using Haelya.Application.Services;
 using Haelya.Application.Services.Auth;
+using Haelya.Application.Validators.Category;
+using Haelya.Application.Validators.Product;
 using Haelya.Application.Validators.User;
 using Haelya.Domain.Interfaces;
 using Haelya.Infrastructure;
@@ -27,26 +31,58 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 //FluentValidation
+
+//User
 builder.Services.AddScoped<IValidator<LoginDTO>, LoginDTOValidator>();
 builder.Services.AddScoped<IValidator<RegisterDTO>, RegisterDTOValidator>();
+
+//Category
+builder.Services.AddScoped<IValidator<CategoryCreateDTO>, CategoryCreateDTOValidator>();
+builder.Services.AddScoped<IValidator<CategoryUpdateDTO>, CategoryUpdateDTOValidator>();
+
+//Product
+builder.Services.AddScoped<IValidator<ProductCreateDTO>, ProductCreateDTOValidator>();
+builder.Services.AddScoped<IValidator<ProductUpdateDTO>, ProductUpdateDTOValidator>();
+builder.Services.AddScoped<IValidator<ProductUpdatePriceDTO>, ProductUpdatePriceDTOValidator>();
+builder.Services.AddScoped<IValidator<ProductUpdateMarginDTO>, ProductUpdateMarginDTOValidator>();
+
 
 //AutoMapper
 builder.Services.AddAutoMapper(cfg => {
     cfg.AddProfile(new UserMappingProfile());
     cfg.AddProfile(new CategoryMappingProfile());
+    cfg.AddProfile(new BrandMappingProfile());
     cfg.AddProfile(new ProductMappingProfile());
     
     //add other line for more profiles
 });
 
 //Services 
+
+//Brand
+builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+
+//Product 
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+//Category
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+//Refresh Token
 builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
+//User
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+//Dummy logger 
 builder.Services.AddScoped<ISecurityLogger, DummySecurityLogger>();
+
+//Token
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 

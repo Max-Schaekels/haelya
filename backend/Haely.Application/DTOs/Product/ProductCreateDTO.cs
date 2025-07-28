@@ -15,5 +15,6 @@ namespace Haelya.Application.DTOs.Product
         public decimal Margin { get; set; }
         public int Stock { get; set; }
         public int CategoryId { get; set; }
+        public int BrandId { get; set; }
     }
 }

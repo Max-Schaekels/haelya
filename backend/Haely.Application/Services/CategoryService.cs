@@ -39,14 +39,20 @@ namespace Haelya.Application.Services
             return _mapper.Map<CategoryDTO>(category);
         }
 
-        public async Task DisableAsync(int id)
-        {
-            await _categoryRepository.DisableAsync(id);
+        public async Task SetActiveAsync(int id, bool isActive)
+        {            
+            await _categoryRepository.SetActiveAsync(id, isActive);
         }
 
-        public async Task<IEnumerable<CategoryDTO>> GetAllAsync()
+        public async Task<IEnumerable<CategoryDTO>> GetAllVisibleAsync()
         {
-            IEnumerable<Category> categories = await _categoryRepository.GetAllAsync();
+            IEnumerable<Category> categories = await _categoryRepository.GetAllVisibleAsync();
+            return _mapper.Map<IEnumerable<CategoryDTO>>(categories);
+        }
+
+        public async Task<IEnumerable<CategoryDTO>> GetAllAdminAsync()
+        {
+            IEnumerable<Category> categories = await _categoryRepository.GetAllAdminAsync();
             return _mapper.Map<IEnumerable<CategoryDTO>>(categories);
         }
 
@@ -68,6 +74,10 @@ namespace Haelya.Application.Services
             if (existingCategory == null)
             {
                 throw new NotFoundException("Catégorie not found");
+            }
+            if (await _categoryRepository.ExistsByNameAsync(dto.Name) && dto.Name != existingCategory.Name)
+            {
+                throw new CategoryNameAlreadyUsedException();
             }
 
             _mapper.Map(dto, existingCategory);

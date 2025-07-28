@@ -37,9 +37,19 @@ namespace Haelya.Infrastructure.Configurations
             builder.Property(p => p.Stock)
                 .HasDefaultValue(0);
 
+            builder.Property(p => p.Slug)
+                .IsRequired()
+                .HasMaxLength(255);
+
+            builder.HasIndex(p => p.Slug).IsUnique();
+
             builder.HasOne(p => p.Category)
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId);
+
+            builder.HasOne(p => p.Brand)
+               .WithMany(b => b.Products)
+               .HasForeignKey(p => p.BrandId);
 
             builder.Property(p => p.Margin)
                .HasColumnType("decimal(10,2)")
@@ -63,8 +73,6 @@ namespace Haelya.Infrastructure.Configurations
             builder.Property(p => p.Featured)
                 .HasDefaultValue(false);
 
-            builder.Property(p => p.IsDeleted)
-                .HasDefaultValue(false);
 
             builder.Property(p => p.DateCreated)
                 .HasColumnType("datetime2");
@@ -72,8 +80,6 @@ namespace Haelya.Infrastructure.Configurations
             builder.Property(p => p.DateUpdated)
                 .HasColumnType("datetime2");
 
-            builder.Property(p => p.DateDeleted)
-                .HasColumnType("datetime2");
 
         }
     }

@@ -32,27 +32,27 @@ namespace Haelya.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task ArchiveAsync(int id)
-        {
-            Product product = await GetRequiredProductAsync(id);
-
-            product.IsActive = false;
-            product.InSlide = false;
-            product.Featured = false;
-            product.IsDeleted = true;
-            product.DateDeleted = DateTime.UtcNow;
-
-            await _context.SaveChangesAsync();
-        }
 
         public async Task<bool> ExistsAsync(int id)
         {
             return await _context.Products.AnyAsync(p => p.Id == id);  
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<IEnumerable<Product>> GetAllVisibleAsync()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Where(p => p.IsActive)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetAllAdminAsync()
+        {
+            return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .ToListAsync();
         }
 
         public async Task<Product?> GetByIdAsync(int id)
@@ -118,6 +118,14 @@ namespace Haelya.Infrastructure.Repositories
             productToUpdate.Margin = ProductPricingHelper.CalculateMargin(productToUpdate.SupplierPrice, newPrice);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<Product?> GetBySlugAsync(string slug)
+        {
+            return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .FirstOrDefaultAsync(p => p.Slug == slug && p.IsActive);
         }
     }
 }

@@ -21,7 +21,15 @@ namespace Haelya.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAllCategories()
         {
-            IEnumerable<CategoryDTO> categories = await _categoryService.GetAllAsync();
+            IEnumerable<CategoryDTO> categories = await _categoryService.GetAllVisibleAsync();
+            return Ok(categories);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllAdminCategories()
+        {
+            IEnumerable<CategoryDTO> categories = await _categoryService.GetAllAdminAsync();
             return Ok(categories);
         }
 
@@ -38,7 +46,7 @@ namespace Haelya.Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryCreateDTO dto)
         {
-            var created = await _categoryService.CreateAsync(dto);
+            CategoryDTO created = await _categoryService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetCategory), new { id = created.Id }, created);
         }
 
@@ -51,12 +59,11 @@ namespace Haelya.Api.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Category/5 (désactivation logique)
-        [HttpDelete("{id}")]
+        [HttpPut("{id}/active")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DisableCategory(int id)
+        public async Task<IActionResult> SetActive(int id, [FromBody] bool isActive)
         {
-            await _categoryService.DisableAsync(id);
+            await _categoryService.SetActiveAsync(id, isActive);
             return NoContent();
         }
 

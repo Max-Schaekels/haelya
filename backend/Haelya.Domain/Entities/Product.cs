@@ -15,8 +15,11 @@ namespace Haelya.Domain.Entities
         public decimal Price { get; set; }
         public decimal SupplierPrice { get; set; }
         public int Stock {  get; set; } = 0;
+        public string Slug { get; set; } = null!;
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
+        public int BrandId { get; set; }
+        public Brand Brand { get; set; } = null!;
         public decimal Margin { get; set; } = 15;
         public int ViewCount { get; set; } = 0;
         public decimal AvgNote => NoteCount == 0 ? 0 : Math.Round((decimal)TotalNote / NoteCount, 2);
@@ -25,10 +28,9 @@ namespace Haelya.Domain.Entities
         public bool InSlide { get; set; } = false ;
         public bool IsActive { get; set; } = false;
         public bool Featured { get; set; }=false ;
-        public bool IsDeleted { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
         public DateTime? DateUpdated { get; set; }
-        public DateTime? DateDeleted { get; set; }
+
 
 
     }

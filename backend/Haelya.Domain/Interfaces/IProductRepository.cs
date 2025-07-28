@@ -9,11 +9,12 @@ namespace Haelya.Domain.Interfaces
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<Product>> GetAllAsync();
+        Task<IEnumerable<Product>> GetAllVisibleAsync();
+        Task<IEnumerable<Product>> GetAllAdminAsync();
         Task<Product?> GetByIdAsync(int id);
         Task<bool> ExistsAsync(int id);
         Task AddAsync(Product product);
-        Task ArchiveAsync(int id);
+        Task<Product?> GetBySlugAsync(string slug);
 
         // Updates spécifiques
         Task UpdateInfosAsync(Product product); 

@@ -10,10 +10,11 @@ namespace Haelya.Application.Interfaces
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<CategoryDTO>> GetAllAsync();
+        Task<IEnumerable<CategoryDTO>> GetAllVisibleAsync();
+        Task<IEnumerable<CategoryDTO>> GetAllAdminAsync();
         Task<CategoryDTO?> GetByIdAsync(int id);
         Task<CategoryDTO> CreateAsync(CategoryCreateDTO dto);
         Task UpdateAsync(int id, CategoryUpdateDTO dto);
-        Task DisableAsync(int id);
+        Task SetActiveAsync(int id, bool isActive);
     }
 }

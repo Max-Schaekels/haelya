@@ -25,14 +25,14 @@ namespace Haelya.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DisableAsync(int id)
+        public async Task SetActiveAsync(int id, bool isActive)
         {
             Category? category = await _context.Categories.FindAsync(id);
             if (category == null) 
             {
                 throw new KeyNotFoundException("Category not found");
             }
-            category.IsActive = false;
+            category.IsActive = isActive;
             await _context.SaveChangesAsync();
         }
 
@@ -41,11 +41,16 @@ namespace Haelya.Infrastructure.Repositories
             return await _context.Categories.AnyAsync(c => c.Name == name);
         }
 
-        public async Task<IEnumerable<Category>> GetAllAsync()
+        public async Task<IEnumerable<Category>> GetAllVisibleAsync()
         {
             return await _context.Categories
                 .Where(c => c.IsActive)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Category>> GetAllAdminAsync()
+        {
+            return await _context.Categories.ToListAsync();
         }
 
         public async Task<Category?> GetByIdAsync(int id)
