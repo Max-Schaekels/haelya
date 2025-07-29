@@ -26,6 +26,14 @@ namespace Haelya.Api.Controllers
             return Ok(brands);
         }
 
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetById(int id)
+        {
+            BrandDTO? brand = await _brandService.GetByIdAsync(id);
+            return Ok(brand);
+        }
+
         // Admin only
         [HttpGet("admin")]
         [Authorize(Roles = "Admin")]
@@ -35,13 +43,6 @@ namespace Haelya.Api.Controllers
             return Ok(brands);
         }
 
-        [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            BrandDTO? brand = await _brandService.GetByIdAsync(id);
-            return Ok(brand);
-        }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]

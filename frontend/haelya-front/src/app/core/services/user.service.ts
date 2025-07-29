@@ -13,7 +13,7 @@ export class UserService {
 
   private readonly _apiUrl = environment.apiUrl;
   
-  private _http : HttpClient = inject(HttpClient);
+  private readonly _http : HttpClient = inject(HttpClient);
   
 
   constructor() { }
