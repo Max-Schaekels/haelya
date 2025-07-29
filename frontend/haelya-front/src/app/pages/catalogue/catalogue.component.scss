@@ -1,0 +1,42 @@
+.catalogue-wrapper {
+    padding: 2rem 1rem;
+
+    .catalogue-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .empty-message {
+        text-align: center;
+        color: #6b7280; // gris neutre
+        font-size: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+
+        @media (min-width: 768px) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media (min-width: 1024px) {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (min-width: 1400px) {
+            grid-template-columns: repeat(5, 1fr); // ajout pour écrans larges
+        }
+    }
+
+    .catalogue-loader {
+        text-align: center;
+        padding: 2rem;
+        font-size: 1.2rem;
+        color: #999;
+    }
+}

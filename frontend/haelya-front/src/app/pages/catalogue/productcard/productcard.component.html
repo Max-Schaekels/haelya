@@ -1,0 +1,10 @@
+<div class="card">
+  <div class="image-container">
+    <img [src]="product.imageUrl" [alt]="product.name" />
+  </div>
+
+  <p class="name">{{ product.name }}</p>
+  <p class="price">{{ product.price | currency:'EUR':'symbol':'1.2-2' }}</p>
+
+  <div class="overlay">Ajouter au panier</div>
+</div>

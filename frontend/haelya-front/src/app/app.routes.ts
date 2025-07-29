@@ -29,7 +29,12 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./pages/auth/register/register.component').then((m) => m.RegisterComponent),
             },
-            
+            {
+                path: 'catalogue',
+                loadComponent: () =>
+                    import('./pages/catalogue/catalogue.component').then(m => m.CatalogueComponent),
+            },
+
             {
                 path: 'dashboard',
                 canActivate: [authGuard],

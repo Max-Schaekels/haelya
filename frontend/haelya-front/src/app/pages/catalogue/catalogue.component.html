@@ -1,0 +1,16 @@
+<section class="catalogue-wrapper">
+    <h2 class="catalogue-title">Tous les produits</h2>
+    @if (loading) {
+    <div class="catalogue-loader">Chargement des produits...</div>
+    } @else {
+    @if (products.length === 0) {
+    <p class="empty-message">Aucun produit disponible pour le moment.</p>
+    } @else {
+    <div class="product-grid">
+        @for (product of products; track product.id) {
+        <app-productcard [product]="product" />
+        }
+    </div>
+    }
+    }
+</section>
