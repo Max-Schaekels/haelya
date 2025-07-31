@@ -1,21 +1,13 @@
-<div class="tabs">
+<div class="tabs" *ngIf="tabs.length > 0">
   <ul class="tab-nav">
-    <li [class.active]="activeTab === 0" (click)="setActiveTab(0)">Description</li>
-    <li [class.active]="activeTab === 1" (click)="setActiveTab(1)">Détails</li>
-    <li [class.active]="activeTab === 2" (click)="setActiveTab(2)">Avis</li>
+    @for (tab of tabs; track tab; let i = $index) {
+      <li [class.active]="activeTab === i" (click)="setActiveTab(i)">
+        {{ tab.title }}
+      </li>
+    }
   </ul>
 
-  @if (activeTab === 0) {
-    <div class="tab-content">
-      <p>Contenu de l'onglet Description. À remplacer par du contenu dynamique plus tard.</p>
-    </div>
-  } @else if (activeTab === 1) {
-    <div class="tab-content">
-      <p>Contenu de l'onglet Détails techniques.</p>
-    </div>
-  } @else {
-    <div class="tab-content">
-      <p>Contenu de l'onglet Avis clients.</p>
-    </div>
-  }
+  <div class="tab-content">
+    {{ tabs[activeTab].content }}
+  </div>
 </div>

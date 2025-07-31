@@ -1,0 +1,122 @@
+.product-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  padding: 2rem 0;
+
+  .product-main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    width: 100%;
+  }
+
+  .image-section {
+    flex: 1 1 350px;
+    max-width: 500px;
+
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border: 1px solid #eee;
+      background-color: #fafafa;
+      padding: 1rem;
+    }
+  }
+
+  .info-section {
+    flex: 1 1 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    .category {
+      color: #999;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .brand,
+    .note {
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #222;
+      margin-top: 1rem;
+    }
+
+    .cart-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-top: 1rem;
+
+      .add-to-cart {
+        background-color: #c9ab8c;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.6rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: #444;
+        }
+      }
+    }
+  }
+
+  .product-tabs {
+    margin-top: 3rem;
+    width: 100%;
+  }
+
+  .loading-error {
+    text-align: center;
+    padding: 3rem 0;
+    font-size: 1.1rem;
+    color: #555;
+  }
+}
+
+// Responsive
+@media screen and (max-width: 768px) {
+  .product-detail {
+    .product-main {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .image-section,
+    .info-section {
+      max-width: 100%;
+    }
+
+    .info-section {
+      align-items: center;
+      text-align: center;
+
+      .cart-actions {
+        flex-direction: column;
+        align-items: stretch;
+
+        .add-to-cart {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

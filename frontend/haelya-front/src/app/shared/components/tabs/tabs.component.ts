@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-tabs',
@@ -7,11 +7,20 @@ import { Component } from '@angular/core';
   templateUrl: './tabs.component.html',
   styleUrl: './tabs.component.scss'
 })
-export class TabsComponent {
-  activeTab: number =0;
+export class TabsComponent implements OnInit {
 
-  setActiveTab(index: number){
+  activeTab: number = 0;
+
+  @Input() tabs: { title: string; content: string }[] = [];
+
+  setActiveTab(index: number) {
     this.activeTab = index;
+  }
+
+  ngOnInit(): void {
+    if (this.tabs.length === 0) {
+      this.tabs = [{ title: 'Aucun contenu', content: 'Aucun onglet fourni.' }];
+    }
   }
 
 }

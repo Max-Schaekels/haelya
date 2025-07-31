@@ -1,5 +1,5 @@
 <div class="quantity-selector">
-  <button (click)="decrement()" class="qty-btn">−</button>
-  <input type="number" [value]="quantity" (input)="onInput($event)" />
-  <button (click)="increment()" class="qty-btn">+</button>
+  <button (click)="decrement()" class="qty-btn" [disabled]="isDisabled">−</button>
+  <input type="number" class="qty-input" [value]="value" (input)="onInput($event)" [disabled]="isDisabled" />
+  <button (click)="increment()" class="qty-btn" [disabled]="isDisabled">+</button>
 </div>

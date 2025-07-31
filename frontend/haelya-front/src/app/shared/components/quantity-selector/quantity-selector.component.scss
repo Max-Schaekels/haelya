@@ -1,37 +1,50 @@
 .quantity-selector {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
 
   .qty-btn {
+    width: 40px;
+    height: 40px;
     background-color: #f3f2ec;
     border: 1px solid #c9ab8c;
     color: #c9ab8c;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 500;
-    width: 2.5rem;
-    height: 2.5rem;
     border-radius: 3px;
-    transition: all 0.3s ease;
     cursor: pointer;
+    transition: all 0.3s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0; // supprime tout décalage vertical
 
     &:hover {
       background-color: #c9ab8c;
       color: white;
     }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 
-  input.qty-input {
-    width: 3rem;
-    text-align: center;
+  .qty-input {
+    width: 40px;
+    height: 40px;
+    margin: 0 8px;
     border: 1px solid #c9ab8c;
+    border-radius: 3px;
     background-color: #fffdf8;
     font-size: 1rem;
-    padding: 0.3rem 0.4rem;
-    border-radius: 3px;
-    color: #333;
     font-family: 'Open Sans', sans-serif;
+    color: #333;
+    text-align: center;
+
+    padding: 0; // aligne verticalement
+    line-height: 40px; // même que height pour parfait centrage visuel
 
     &:focus {
       outline: none;

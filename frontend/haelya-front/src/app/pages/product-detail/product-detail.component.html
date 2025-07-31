@@ -1,0 +1,41 @@
+@if (!loading && product) {
+  <div class="product-detail container">
+    <div class="product-main">
+      <!-- Image -->
+      <div class="image-section">
+        <img [src]="product.imageUrl" [alt]="product.name" />
+      </div>
+
+      <!-- Infos -->
+      <div class="info-section">
+        <p class="category">{{ product.categoryName }}</p>
+        <h1>{{ product.name }}</h1>
+        <p class="brand">Marque : {{ product.brandName }}</p>
+        <p class="note">Note moyenne : {{ product.avgNote }} / 5</p>
+
+        <div class="price">{{ product.price.toFixed(2) }}€</div>
+
+        <div class="cart-actions">
+          <app-quantity-selector [(ngModel)]="quantity"></app-quantity-selector>
+          <button class="add-to-cart">Add to cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description longue -->
+    <div class="product-tabs">
+      <app-tabs [tabs]="[
+        { title: 'Description', content: product.description || '' },
+        {title : 'Avis', content: 'Les avis utilisateurs viendront ici. '}
+      ]"></app-tabs>
+    </div>
+  </div>
+} @else {
+  <div class="loading-error container">
+    @if (loading) {
+      <p>Chargement...</p>
+    } @else {
+      <p>{{ errorMessage }}</p>
+    }
+  </div>
+}

@@ -42,7 +42,5 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
-  onTestClick(): void {
-  console.log('Le bouton fonctionne !');
-}
+
 }
