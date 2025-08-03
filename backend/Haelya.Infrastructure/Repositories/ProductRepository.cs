@@ -1,5 +1,6 @@
 ﻿using AutoMapper.Features;
 using Haelya.Domain.Entities;
+using Haelya.Domain.Filters;
 using Haelya.Domain.Interfaces;
 using Haelya.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -126,6 +127,156 @@ namespace Haelya.Infrastructure.Repositories
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .FirstOrDefaultAsync(p => p.Slug == slug && p.IsActive);
+        }
+
+        public async Task<List<Product>> GetFilteredVisibleAsync(ProductFilterPublic filter)
+        {
+            IQueryable<Product> query = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Where(p => p.IsActive);
+
+            query = ApplyFilters(query, filter);
+            query = ApplySortingPublic(query, filter.SortBy, filter.SortDirection == "asc");
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<Product>> GetFilteredAdminAsync(ProductFilterAdmin filter)
+        {
+            IQueryable<Product> query = _context.Products
+                    .Include(p => p.Category)
+                    .Include(p => p.Brand);
+
+
+            query = ApplyFilters(query, filter);
+            query = ApplySortingAdmin(query, filter.SortBy, filter.SortDirection == "asc");
+
+            return await query.ToListAsync();
+        }
+
+        // Méthodes privées pour appliquer les filtres
+        private IQueryable<Product> ApplyFilters(IQueryable<Product> query, ProductFilterPublic filter)
+        {
+            if (filter.CategoryId.HasValue)
+            {
+                query = query.Where(p => p.CategoryId == filter.CategoryId.Value);
+            }
+
+            if (filter.BrandId.HasValue)
+            {
+                query = query.Where(p => p.BrandId == filter.BrandId.Value);
+            }
+
+            if (filter.MinPrice.HasValue)
+            {
+                query = query.Where(p => p.Price >= filter.MinPrice.Value);
+            }
+
+            if (filter.MaxPrice.HasValue)
+            {
+                query = query.Where(p => p.Price <= filter.MaxPrice.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter.Search))
+            {
+                string search = filter.Search.Trim();
+                query = query.Where(p => p.Name.Contains(search) || p.Description.Contains(search));
+            }
+
+            return query;
+        }
+
+        private IQueryable<Product> ApplyFilters(IQueryable<Product> query, ProductFilterAdmin filter)
+        {
+            query = ApplyFilters(query, filter); 
+
+            if (filter.IsActive.HasValue)
+            {
+                query = query.Where(p => p.IsActive == filter.IsActive.Value);
+            }
+
+            return query;
+        }
+
+        // Méthode pour trier les produits
+        private IQueryable<Product> ApplySortingPublic(IQueryable<Product> query, string? sortBy, bool isAscending)
+        {
+            string key = sortBy?.Trim().ToLowerInvariant() ?? string.Empty;
+
+            if (key == "price")
+                return isAscending ? query.OrderBy(p => p.Price) : query.OrderByDescending(p => p.Price);
+
+            if (key == "name")
+                return isAscending ? query.OrderBy(p => p.Name) : query.OrderByDescending(p => p.Name);
+
+            if (key == "datecreated")
+                return isAscending ? query.OrderBy(p => p.DateCreated) : query.OrderByDescending(p => p.DateCreated);
+
+            if (key == "viewcount")
+                return isAscending ? query.OrderBy(p => p.ViewCount) : query.OrderByDescending(p => p.ViewCount);
+
+            if (key == "avgnote")
+                return isAscending ? query.OrderBy(p => p.AvgNote) : query.OrderByDescending(p => p.AvgNote);
+
+            // Tri par défaut
+            return query.OrderBy(p => p.Name);
+        }
+
+        private IQueryable<Product> ApplySortingAdmin(IQueryable<Product> query, string? sortBy, bool isAscending)
+        {
+            string key = sortBy?.Trim().ToLowerInvariant() ?? string.Empty;
+
+            if (key == "price")
+                return isAscending ? query.OrderBy(p => p.Price) : query.OrderByDescending(p => p.Price);
+
+            if (key == "name")
+                return isAscending ? query.OrderBy(p => p.Name) : query.OrderByDescending(p => p.Name);
+
+            if (key == "datecreated")
+                return isAscending ? query.OrderBy(p => p.DateCreated) : query.OrderByDescending(p => p.DateCreated);
+
+            if (key == "dateupdated")
+                return isAscending ? query.OrderBy(p => p.DateUpdated) : query.OrderByDescending(p => p.DateUpdated);
+
+            if (key == "stock")
+                return isAscending ? query.OrderBy(p => p.Stock) : query.OrderByDescending(p => p.Stock);
+
+            if (key == "slug")
+                return isAscending ? query.OrderBy(p => p.Slug) : query.OrderByDescending(p => p.Slug);
+
+            if (key == "supplierprice")
+                return isAscending ? query.OrderBy(p => p.SupplierPrice) : query.OrderByDescending(p => p.SupplierPrice);
+
+            if (key == "margin")
+                return isAscending ? query.OrderBy(p => p.Margin) : query.OrderByDescending(p => p.Margin);
+
+            if (key == "isactive")
+                return isAscending ? query.OrderBy(p => p.IsActive) : query.OrderByDescending(p => p.IsActive);
+
+            if (key == "featured")
+                return isAscending ? query.OrderBy(p => p.Featured) : query.OrderByDescending(p => p.Featured);
+
+            if (key == "inslide")
+                return isAscending ? query.OrderBy(p => p.InSlide) : query.OrderByDescending(p => p.InSlide);
+
+            if (key == "totalnote")
+                return isAscending ? query.OrderBy(p => p.TotalNote) : query.OrderByDescending(p => p.TotalNote);
+
+            if (key == "notecount")
+                return isAscending ? query.OrderBy(p => p.NoteCount) : query.OrderByDescending(p => p.NoteCount);
+
+            if (key == "viewcount")
+                return isAscending ? query.OrderBy(p => p.ViewCount) : query.OrderByDescending(p => p.ViewCount);
+
+            if (key == "avgnote")
+                return isAscending ? query.OrderBy(p => p.AvgNote) : query.OrderByDescending(p => p.AvgNote);
+
+            if (key == "id")
+                return isAscending ? query.OrderBy(p => p.Id) : query.OrderByDescending(p => p.Id);
+
+            // Tri par défaut
+            return query.OrderBy(p => p.Name);
         }
     }
 }

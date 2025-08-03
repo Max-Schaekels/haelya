@@ -1,4 +1,5 @@
 ﻿using Haelya.Domain.Entities;
+using Haelya.Domain.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,5 +26,13 @@ namespace Haelya.Domain.Interfaces
         Task SetActiveAsync(int id, bool isActive);
         Task SetFeaturedAsync(int id, bool featured);
         Task SetInSlideAsync(int id, bool inSlide);
+
+        // Filtrage et pagination
+
+        // Pour le public
+        Task<List<Product>> GetFilteredVisibleAsync(ProductFilterPublic filter);
+
+        // Pour l'admin
+        Task<List<Product>> GetFilteredAdminAsync(ProductFilterAdmin filter);
     }
 }

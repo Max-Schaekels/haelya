@@ -4,6 +4,7 @@ using Haelya.Application.DTOs.Product;
 using Haelya.Application.Exceptions;
 using Haelya.Application.Interfaces;
 using Haelya.Domain.Entities;
+using Haelya.Domain.Filters;
 using Haelya.Domain.Interfaces;
 using Haelya.Shared.Helpers;
 using System;
@@ -135,6 +136,28 @@ namespace Haelya.Application.Services
 
             ProductDTO dto = _mapper.Map<ProductDTO>(product);
             return dto;
+        }
+
+        public async Task<List<ProductDTO>> GetFilteredVisibleAsync(ProductFilterPublicDTO filterDto)
+        {
+            ProductFilterPublic filter = _mapper.Map<ProductFilterPublic>(filterDto);
+
+            List<Product> products = await _productRepository.GetFilteredVisibleAsync(filter);
+
+            List<ProductDTO> result = _mapper.Map<List<ProductDTO>>(products);
+
+            return result;
+        }
+
+        public async Task<List<ProductDTO>> GetFilteredAdminAsync(ProductFilterAdminDTO filterDto)
+        {
+            ProductFilterAdmin filter = _mapper.Map<ProductFilterAdmin>(filterDto);
+
+            List<Product> products = await _productRepository.GetFilteredAdminAsync(filter);
+
+            List<ProductDTO> result = _mapper.Map<List<ProductDTO>>(products);
+
+            return result;
         }
     }
 }

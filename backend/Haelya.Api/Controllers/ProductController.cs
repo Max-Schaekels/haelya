@@ -47,12 +47,28 @@ namespace Haelya.Api.Controllers
             return Ok(product);
         }
 
+        [HttpGet("visible")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFilteredVisible([FromQuery] ProductFilterPublicDTO filter)
+        {
+            List<ProductDTO> products = await _productService.GetFilteredVisibleAsync(filter);
+            return Ok(products);
+        }
+
         //Admin
         [HttpGet("admin")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllAdmin()
         {
             IEnumerable<ProductDTO> products = await _productService.GetAllAdminAsync();
+            return Ok(products);
+        }
+
+        [HttpGet("admin/filtered")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetFilteredAdmin([FromQuery] ProductFilterAdminDTO filter)
+        {
+            List<ProductDTO> products = await _productService.GetFilteredAdminAsync(filter);
             return Ok(products);
         }
 
@@ -111,6 +127,8 @@ namespace Haelya.Api.Controllers
             await _productService.SetInSlideAsync(id, inSlide);
             return NoContent();
         }
+
+        
 
     }
 }

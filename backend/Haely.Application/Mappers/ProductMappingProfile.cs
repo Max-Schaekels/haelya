@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Haelya.Application.DTOs.Product;
 using Haelya.Domain.Entities;
+using Haelya.Domain.Filters;
 using Haelya.Shared.Helpers;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,9 @@ namespace Haelya.Application.Mappers
                 .ForMember(dest => dest.NoteCount, opt => opt.Ignore())
                 .ForMember(dest => dest.TotalNote, opt => opt.Ignore())
                 .ForMember(dest => dest.DateUpdated, opt => opt.MapFrom(_ => DateTime.UtcNow));
+
+            CreateMap<ProductFilterPublicDTO, ProductFilterPublic>();
+            CreateMap<ProductFilterAdminDTO, ProductFilterAdmin>();
         }
     }
 }

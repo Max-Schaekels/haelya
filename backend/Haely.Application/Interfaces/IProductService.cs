@@ -15,13 +15,22 @@ namespace Haelya.Application.Interfaces
         Task<ProductDTO> CreateAsync(ProductCreateDTO dto);
         Task<ProductDTO?> GetBySlugAsync(string slug);
 
+        //Updates
+
         Task UpdateAsync(int id, ProductUpdateDTO dto);
         Task UpdatePriceAsync(ProductUpdatePriceDTO dto);
         Task UpdateMarginAsync(ProductUpdateMarginDTO dto);
 
+        // Updates booléens individuels
+
         Task SetActiveAsync(int id, bool isActive);
         Task SetFeaturedAsync(int id, bool featured);
         Task SetInSlideAsync(int id, bool inSlide);
+
+        // Filtrage 
+
+        Task<List<ProductDTO>> GetFilteredVisibleAsync(ProductFilterPublicDTO filter);
+        Task<List<ProductDTO>> GetFilteredAdminAsync(ProductFilterAdminDTO filter);
 
 
     }
