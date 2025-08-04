@@ -53,7 +53,8 @@ builder.Services.AddAutoMapper(cfg => {
     cfg.AddProfile(new CategoryMappingProfile());
     cfg.AddProfile(new BrandMappingProfile());
     cfg.AddProfile(new ProductMappingProfile());
-    
+    cfg.AddProfile(new CommonMappingProfile());
+
     //add other line for more profiles
 });
 

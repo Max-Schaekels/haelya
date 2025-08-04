@@ -1,4 +1,5 @@
-﻿using Haelya.Domain.Entities;
+﻿using Haelya.Domain.Common;
+using Haelya.Domain.Entities;
 using Haelya.Domain.Filters;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,8 @@ namespace Haelya.Domain.Interfaces
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<Product>> GetAllVisibleAsync();
-        Task<IEnumerable<Product>> GetAllAdminAsync();
+        Task<PagedResult<Product>> GetAllVisibleAsync(PaginationQuery pagination);
+        Task<PagedResult<Product>> GetAllAdminAsync(PaginationQuery pagination);
         Task<Product?> GetByIdAsync(int id);
         Task<bool> ExistsAsync(int id);
         Task AddAsync(Product product);
@@ -30,9 +31,9 @@ namespace Haelya.Domain.Interfaces
         // Filtrage et pagination
 
         // Pour le public
-        Task<List<Product>> GetFilteredVisibleAsync(ProductFilterPublic filter);
+        Task<PagedResult<Product>> GetFilteredVisibleAsync(ProductFilterPublic filter);
 
         // Pour l'admin
-        Task<List<Product>> GetFilteredAdminAsync(ProductFilterAdmin filter);
+        Task<PagedResult<Product>> GetFilteredAdminAsync(ProductFilterAdmin filter);
     }
 }

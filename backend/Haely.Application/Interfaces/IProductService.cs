@@ -1,4 +1,5 @@
-﻿using Haelya.Application.DTOs.Product;
+﻿using Haelya.Application.DTOs.Common;
+using Haelya.Application.DTOs.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace Haelya.Application.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductDTO>> GetAllVisibleAsync();
-        Task<IEnumerable<ProductDTO>> GetAllAdminAsync();
+        Task<PagedResultDTO<ProductDTO>> GetAllVisibleAsync(PaginationQueryDTO pagination);
+        Task<PagedResultDTO<ProductDTO>> GetAllAdminAsync(PaginationQueryDTO pagination);
         Task<ProductDTO?> GetByIdAsync(int id);
         Task<ProductDTO> CreateAsync(ProductCreateDTO dto);
         Task<ProductDTO?> GetBySlugAsync(string slug);
@@ -29,8 +30,8 @@ namespace Haelya.Application.Interfaces
 
         // Filtrage 
 
-        Task<List<ProductDTO>> GetFilteredVisibleAsync(ProductFilterPublicDTO filter);
-        Task<List<ProductDTO>> GetFilteredAdminAsync(ProductFilterAdminDTO filter);
+        Task<PagedResultDTO<ProductDTO>> GetFilteredVisibleAsync(ProductFilterPublicDTO filter);
+        Task<PagedResultDTO<ProductDTO>> GetFilteredAdminAsync(ProductFilterAdminDTO filter);
 
 
     }

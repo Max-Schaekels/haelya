@@ -1,4 +1,5 @@
 ﻿using AutoMapper.Features;
+using Haelya.Domain.Common;
 using Haelya.Domain.Entities;
 using Haelya.Domain.Filters;
 using Haelya.Domain.Interfaces;
@@ -39,21 +40,47 @@ namespace Haelya.Infrastructure.Repositories
             return await _context.Products.AnyAsync(p => p.Id == id);  
         }
 
-        public async Task<IEnumerable<Product>> GetAllVisibleAsync()
+        public async Task<PagedResult<Product>> GetAllVisibleAsync(PaginationQuery pagination)
         {
-            return await _context.Products
+            IQueryable<Product> query = _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
-                .Where(p => p.IsActive)
+                .Where(p => p.IsActive);
+
+            int total = await query.CountAsync();
+            List<Product> items = await query
+                .Skip(pagination.Skip)
+                .Take(pagination.PageSize)
                 .ToListAsync();
+
+            return new PagedResult<Product>
+            {
+                Items = items,
+                TotalCount = total,
+                Page = pagination.Page,
+                PageSize = pagination.PageSize
+            };
         }
 
-        public async Task<IEnumerable<Product>> GetAllAdminAsync()
+        public async Task<PagedResult<Product>> GetAllAdminAsync(PaginationQuery pagination)
         {
-            return await _context.Products
+            IQueryable<Product> query = _context.Products
                 .Include(p => p.Category)
-                .Include(p => p.Brand)
+                .Include(p => p.Brand);
+
+            int total = await query.CountAsync();
+            List<Product> items = await query
+                .Skip(pagination.Skip)
+                .Take(pagination.PageSize)
                 .ToListAsync();
+
+            return new PagedResult<Product>
+            {
+                Items = items,
+                TotalCount = total,
+                Page = pagination.Page,
+                PageSize = pagination.PageSize
+            };
         }
 
         public async Task<Product?> GetByIdAsync(int id)
@@ -129,7 +156,7 @@ namespace Haelya.Infrastructure.Repositories
                 .FirstOrDefaultAsync(p => p.Slug == slug && p.IsActive);
         }
 
-        public async Task<List<Product>> GetFilteredVisibleAsync(ProductFilterPublic filter)
+        public async Task<PagedResult<Product>> GetFilteredVisibleAsync(ProductFilterPublic filter)
         {
             IQueryable<Product> query = _context.Products
                 .Include(p => p.Category)
@@ -139,10 +166,22 @@ namespace Haelya.Infrastructure.Repositories
             query = ApplyFilters(query, filter);
             query = ApplySortingPublic(query, filter.SortBy, filter.SortDirection == "asc");
 
-            return await query.ToListAsync();
+            int totalCount = await query.CountAsync();
+            List<Product> items = await query
+                .Skip(filter.Skip)
+                .Take(filter.PageSize)
+                .ToListAsync();
+
+            return new PagedResult<Product>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                Page = filter.Page,
+                PageSize = filter.PageSize
+            };
         }
 
-        public async Task<List<Product>> GetFilteredAdminAsync(ProductFilterAdmin filter)
+        public async Task<PagedResult<Product>> GetFilteredAdminAsync(ProductFilterAdmin filter)
         {
             IQueryable<Product> query = _context.Products
                     .Include(p => p.Category)
@@ -152,7 +191,19 @@ namespace Haelya.Infrastructure.Repositories
             query = ApplyFilters(query, filter);
             query = ApplySortingAdmin(query, filter.SortBy, filter.SortDirection == "asc");
 
-            return await query.ToListAsync();
+            int totalCount = await query.CountAsync(); 
+            List<Product> items = await query
+                .Skip(filter.Skip)
+                .Take(filter.PageSize)
+                .ToListAsync();
+
+            return new PagedResult<Product>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                Page = filter.Page,
+                PageSize = filter.PageSize
+            };
         }
 
         // Méthodes privées pour appliquer les filtres

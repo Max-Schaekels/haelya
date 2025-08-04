@@ -1,4 +1,5 @@
 ﻿using Haelya.Application.DTOs.Brand;
+using Haelya.Application.DTOs.Common;
 using Haelya.Application.DTOs.Product;
 using Haelya.Application.Interfaces;
 using Haelya.Application.Services;
@@ -24,9 +25,9 @@ namespace Haelya.Api.Controllers
         [HttpGet]
         [AllowAnonymous]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
-        public async Task<IActionResult> GetAllVisible()
+        public async Task<IActionResult> GetAllVisible([FromQuery] PaginationQueryDTO pagination)
         {
-            IEnumerable<ProductDTO> products = await _productService.GetAllVisibleAsync();
+            PagedResultDTO<ProductDTO> products = await _productService.GetAllVisibleAsync(pagination);
             return Ok(products);
         }
 
@@ -51,16 +52,16 @@ namespace Haelya.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetFilteredVisible([FromQuery] ProductFilterPublicDTO filter)
         {
-            List<ProductDTO> products = await _productService.GetFilteredVisibleAsync(filter);
-            return Ok(products);
+            PagedResultDTO<ProductDTO> result = await _productService.GetFilteredVisibleAsync(filter);
+            return Ok(result);
         }
 
         //Admin
         [HttpGet("admin")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllAdmin()
+        public async Task<IActionResult> GetAllAdmin([FromQuery] PaginationQueryDTO pagination)
         {
-            IEnumerable<ProductDTO> products = await _productService.GetAllAdminAsync();
+            PagedResultDTO<ProductDTO> products = await _productService.GetAllAdminAsync(pagination);
             return Ok(products);
         }
 
@@ -68,8 +69,8 @@ namespace Haelya.Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetFilteredAdmin([FromQuery] ProductFilterAdminDTO filter)
         {
-            List<ProductDTO> products = await _productService.GetFilteredAdminAsync(filter);
-            return Ok(products);
+            PagedResultDTO<ProductDTO> result = await _productService.GetFilteredAdminAsync(filter);
+            return Ok(result);
         }
 
         [HttpPost]

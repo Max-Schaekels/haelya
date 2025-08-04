@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using AutoMapper.Features;
+using Haelya.Application.DTOs.Common;
 using Haelya.Application.DTOs.Product;
 using Haelya.Application.Exceptions;
 using Haelya.Application.Interfaces;
+using Haelya.Domain.Common;
 using Haelya.Domain.Entities;
 using Haelya.Domain.Filters;
 using Haelya.Domain.Interfaces;
@@ -36,16 +37,22 @@ namespace Haelya.Application.Services
             return _mapper.Map<ProductDTO>(product);
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetAllVisibleAsync()
+        public async Task<PagedResultDTO<ProductDTO>> GetAllVisibleAsync(PaginationQueryDTO dto)
         {
-            IEnumerable<Product> products = await _productRepository.GetAllVisibleAsync();
-            return _mapper.Map<IEnumerable<ProductDTO>>(products);
+            PaginationQuery pagination = _mapper.Map<PaginationQuery>(dto);
+
+            PagedResult<Product> paged = await _productRepository.GetAllVisibleAsync(pagination);
+
+            return _mapper.Map<PagedResultDTO<ProductDTO>>(paged);
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetAllAdminAsync()
+        public async Task<PagedResultDTO<ProductDTO>> GetAllAdminAsync(PaginationQueryDTO dto)
         {
-            IEnumerable<Product> products = await _productRepository.GetAllAdminAsync();
-            return _mapper.Map<IEnumerable<ProductDTO>>(products);
+            PaginationQuery pagination = _mapper.Map<PaginationQuery>(dto);
+
+            PagedResult<Product> paged = await _productRepository.GetAllAdminAsync(pagination);
+
+            return _mapper.Map<PagedResultDTO<ProductDTO>>(paged);
         }
 
         public async Task<ProductDTO?> GetByIdAsync(int id)
@@ -138,26 +145,27 @@ namespace Haelya.Application.Services
             return dto;
         }
 
-        public async Task<List<ProductDTO>> GetFilteredVisibleAsync(ProductFilterPublicDTO filterDto)
+        public async Task<PagedResultDTO<ProductDTO>> GetFilteredVisibleAsync(ProductFilterPublicDTO filterDto)
         {
             ProductFilterPublic filter = _mapper.Map<ProductFilterPublic>(filterDto);
 
-            List<Product> products = await _productRepository.GetFilteredVisibleAsync(filter);
+            PagedResult<Product> pagedProducts = await _productRepository.GetFilteredVisibleAsync(filter);
 
-            List<ProductDTO> result = _mapper.Map<List<ProductDTO>>(products);
+            PagedResultDTO<ProductDTO> result = _mapper.Map<PagedResultDTO<ProductDTO>>(pagedProducts);
 
             return result;
         }
 
-        public async Task<List<ProductDTO>> GetFilteredAdminAsync(ProductFilterAdminDTO filterDto)
+        public async Task<PagedResultDTO<ProductDTO>> GetFilteredAdminAsync(ProductFilterAdminDTO filterDto)
         {
             ProductFilterAdmin filter = _mapper.Map<ProductFilterAdmin>(filterDto);
 
-            List<Product> products = await _productRepository.GetFilteredAdminAsync(filter);
+            PagedResult<Product> pagedProducts = await _productRepository.GetFilteredAdminAsync(filter);
 
-            List<ProductDTO> result = _mapper.Map<List<ProductDTO>>(products);
+            PagedResultDTO<ProductDTO> result = _mapper.Map<PagedResultDTO<ProductDTO>>(pagedProducts);
 
             return result;
+
         }
     }
 }
