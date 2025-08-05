@@ -22,7 +22,7 @@ export class ProductService {
 
   getAllVisible(query: ProductQuery): Observable<PagedResult<Product>> {
     return this._http.get<PagedResult<Product>>(`${this._apiUrl}/Product`, {
-      params: query as any
+      params: { ...query }
     });
   }
 
@@ -36,7 +36,7 @@ export class ProductService {
 
   getFilteredVisible(query: ProductQuery): Observable<PagedResult<Product>> {
     return this._http.get<PagedResult<Product>>(`${this._apiUrl}/Product/visible`, {
-      params: query as any
+      params: { ...query }
     });
   }
 
@@ -44,13 +44,13 @@ export class ProductService {
 
   getAllAdmin(query: ProductQuery): Observable<PagedResult<Product>> {
     return this._http.get<PagedResult<Product>>(`${this._apiUrl}/Product/admin`, {
-      params: query as any
+      params: { ...query }
     });
   }
 
   getFilteredAdmin(query: ProductQuery): Observable<PagedResult<Product>> {
     return this._http.get<PagedResult<Product>>(`${this._apiUrl}/Product/admin/filtered`, {
-      params: query as any
+      params: { ...query }
     });
   }
 

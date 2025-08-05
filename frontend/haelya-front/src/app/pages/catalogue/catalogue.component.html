@@ -2,22 +2,22 @@
     <h2 class="catalogue-title">Tous les produits</h2>
 
     <!-- Filtres & tri -->
-    <form class="filter-form" (ngSubmit)="applyFilters()">
+    <form class="filter-form" (ngSubmit)="onFilterSubmit($event)">
         <div class="filter-group">
 
             <!-- Catégorie -->
             <select [(ngModel)]="query.categoryId" name="categoryId">
-                <option value="">Toutes les catégories</option>
+                <option [ngValue]="null">Toutes les catégories</option>
                 @for (cat of categories; track cat.id) {
-                <option [value]="cat.id">{{ cat.name }}</option>
+                <option [ngValue]="cat.id">{{ cat.name }}</option>
                 }
             </select>
 
             <!-- Marque -->
             <select [(ngModel)]="query.brandId" name="brandId">
-                <option value="">Toutes les marques</option>
+                <option [ngValue]="null">Toutes les marques</option>
                 @for (brand of brands; track brand.id) {
-                <option [value]="brand.id">{{ brand.name }}</option>
+                <option [ngValue]="brand.id">{{ brand.name }}</option>
                 }
             </select>
 

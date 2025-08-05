@@ -172,6 +172,7 @@ namespace Haelya.Infrastructure.Repositories
                 .Take(filter.PageSize)
                 .ToListAsync();
 
+
             return new PagedResult<Product>
             {
                 Items = items,

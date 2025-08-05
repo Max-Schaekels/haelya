@@ -38,7 +38,9 @@ export class CatalogueComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.applyFilters();
+    this.loadBrands();
+    this.loadCategories();
+    this.loadProducts();
 
   }
 
@@ -55,6 +57,7 @@ export class CatalogueComponent implements OnInit {
         this.products = res.items;
         this.totalCount = res.totalCount;
         this.loading = false;
+        console.log(this.query);
       },
       error: (err) => {
         console.error('Erreur lors du chargement des produits', err);
@@ -94,6 +97,11 @@ onResetFilters(): void {
     sortBy: 'name',
     sortDirection: 'asc'
   };
+  this.loadProducts();
+}
+onFilterSubmit(event: Event): void {
+  event.preventDefault(); // évite le reload + reset
+  this.query.page = 1;
   this.loadProducts();
 }
 

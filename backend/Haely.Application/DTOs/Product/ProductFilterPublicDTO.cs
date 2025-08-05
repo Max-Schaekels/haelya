@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Haelya.Application.DTOs.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Haelya.Application.DTOs.Product
 {
-    public class ProductFilterPublicDTO
+    public class ProductFilterPublicDTO : PaginationQueryDTO
     {
         public int? CategoryId { get; set; }
         public int? BrandId { get; set; }

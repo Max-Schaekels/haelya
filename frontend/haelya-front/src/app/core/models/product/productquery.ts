@@ -1,6 +1,6 @@
 export interface ProductQuery {
-  page?: number;
-  pageSize?: number;
+  page: number;
+  pageSize: number;
   categoryId?: number;
   brandId?: number;
   minPrice?: number;
