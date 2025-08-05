@@ -1,15 +1,80 @@
 <section class="catalogue-wrapper">
     <h2 class="catalogue-title">Tous les produits</h2>
+
+    <!-- Filtres & tri -->
+    <form class="filter-form" (ngSubmit)="applyFilters()">
+        <div class="filter-group">
+
+            <!-- Catégorie -->
+            <select [(ngModel)]="query.categoryId" name="categoryId">
+                <option value="">Toutes les catégories</option>
+                @for (cat of categories; track cat.id) {
+                <option [value]="cat.id">{{ cat.name }}</option>
+                }
+            </select>
+
+            <!-- Marque -->
+            <select [(ngModel)]="query.brandId" name="brandId">
+                <option value="">Toutes les marques</option>
+                @for (brand of brands; track brand.id) {
+                <option [value]="brand.id">{{ brand.name }}</option>
+                }
+            </select>
+
+            <!-- Prix -->
+            <input type="number" placeholder="Prix min" [(ngModel)]="query.minPrice" name="minPrice" />
+            <input type="number" placeholder="Prix max" [(ngModel)]="query.maxPrice" name="maxPrice" />
+
+            <!-- Recherche -->
+            <input type="text" placeholder="Recherche..." [(ngModel)]="query.search" name="search" />
+
+            <!-- Tri -->
+            <select [(ngModel)]="query.sortBy" name="sortBy">
+                <option value="">Trier par...</option>
+                <option value="name">Nom</option>
+                <option value="price">Prix</option>
+                <option value="createdat">Date</option>
+                <option value="viewcount">Popularité</option>
+            </select>
+
+            <select [(ngModel)]="query.sortDirection" name="sortDirection">
+                <option value="asc">Ascendant</option>
+                <option value="desc">Descendant</option>
+            </select>
+
+            <button type="submit" class="apply-btn">Appliquer</button>
+            <button type="button" class="reset-btn" (click)="onResetFilters()">Réinitialiser</button>
+        </div>
+    </form>
+
+    <!-- Résultat / chargement -->
     @if (loading) {
     <div class="catalogue-loader">Chargement des produits...</div>
     } @else {
     @if (products.length === 0) {
-    <p class="empty-message">Aucun produit disponible pour le moment.</p>
+    <p class="empty-message">Aucun produit ne correspond aux filtres.</p>
     } @else {
     <div class="product-grid">
         @for (product of products; track product.id) {
         <app-productcard [product]="product" />
         }
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        @if (query.page! > 1) {
+        <button class="arrow" (click)="onPageChange(query.page! - 1)">← Précédent</button>
+        }
+
+        @for (page of totalPagesArray(); track page) {
+        <button [class.active]="page === query.page" (click)="onPageChange(page)">
+            {{ page }}
+        </button>
+        }
+
+        @if (query.page! < totalPages) { <button class="arrow" (click)="onPageChange(query.page! + 1)">Suivant
+            →</button>
+            }
     </div>
     }
     }

@@ -7,6 +7,8 @@ import { ProductCreate } from '../models/product/product-create';
 import { ProductUpdate } from '../models/product/product-update';
 import { ProductUpdatePrice } from '../models/product/product-update-price';
 import { ProductUpdateMargin } from '../models/product/product-update-margin';
+import { PagedResult } from '../models/product/pagedresult';
+import { ProductQuery } from '../models/product/productquery';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +20,10 @@ export class ProductService {
 
   //Public 
 
-  getAllVisible(): Observable<Product[]> {
-    return this._http.get<Product[]>(`${this._apiUrl}/Product`);
+  getAllVisible(query: ProductQuery): Observable<PagedResult<Product>> {
+    return this._http.get<PagedResult<Product>>(`${this._apiUrl}/Product`, {
+      params: query as any
+    });
   }
 
   getProductById(id: number): Observable<Product> {
@@ -30,10 +34,24 @@ export class ProductService {
     return this._http.get<Product>(`${this._apiUrl}/Product/slug/${slug}`);
   }
 
+  getFilteredVisible(query: ProductQuery): Observable<PagedResult<Product>> {
+    return this._http.get<PagedResult<Product>>(`${this._apiUrl}/Product/visible`, {
+      params: query as any
+    });
+  }
+
   //Admin
 
-  getAllAdmin(): Observable<Product[]> {
-    return this._http.get<Product[]>(`${this._apiUrl}/Product/admin`);
+  getAllAdmin(query: ProductQuery): Observable<PagedResult<Product>> {
+    return this._http.get<PagedResult<Product>>(`${this._apiUrl}/Product/admin`, {
+      params: query as any
+    });
+  }
+
+  getFilteredAdmin(query: ProductQuery): Observable<PagedResult<Product>> {
+    return this._http.get<PagedResult<Product>>(`${this._apiUrl}/Product/admin/filtered`, {
+      params: query as any
+    });
   }
 
   createProduct(product: ProductCreate): Observable<Product> {
