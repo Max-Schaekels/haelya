@@ -1,0 +1,85 @@
+<div class="admin-catalogue">
+  <div class="header">
+    <h2>Catalogue produits</h2>
+    <button class="btn-add" (click)="onAddProduct()">+ Ajouter un produit</button>
+  </div>
+
+  <!-- Filtres -->
+  <form class="filter-form" (ngSubmit)="onFilterSubmit($event)">
+    <input type="text" placeholder="Recherche" [(ngModel)]="query.search" name="search" />
+
+    <select [(ngModel)]="query.categoryId" name="categoryId">
+      <option [ngValue]="null">Toutes les catégories</option>
+      @for (cat of categories; track cat.id) {
+        <option [ngValue]="cat.id">{{ cat.name }}</option>
+      }
+    </select>
+
+    <select [(ngModel)]="query.brandId" name="brandId">
+      <option [ngValue]="null">Toutes les marques</option>
+      @for (brand of brands; track brand.id) {
+        <option [ngValue]="brand.id">{{ brand.name }}</option>
+      }
+    </select>
+
+    <select [(ngModel)]="query.sortBy" name="sortBy">
+      <option value="name">Nom</option>
+      <option value="price">Prix</option>
+    </select>
+
+    <select [(ngModel)]="query.sortDirection" name="sortDirection">
+      <option value="asc">Croissant</option>
+      <option value="desc">Décroissant</option>
+    </select>
+
+    <button type="submit">Filtrer</button>
+    <button type="button" (click)="onResetFilters()">Réinitialiser</button>
+  </form>
+
+  <!-- Tableau produits -->
+  @if (!loading) {
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Prix</th>
+          <th>Catégorie</th>
+          <th>Marque</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of products; track product.id) {
+          <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price | currency:'EUR' }}</td>
+            <td>{{ getCategoryName(product.categoryId) }}</td>
+            <td>{{ getBrandName(product.brandId) }}</td>
+            <td>
+              <button class="btn-details" (click)="onViewProduct(product.id)">Détails</button>
+              <button class="btn-edit" (click)="onEditProduct(product.id)">Modifier</button>
+              <button class="btn-delete" (click)="onDeleteProduct(product.id)">Supprimer</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  <!-- Pagination -->
+  @if (totalPages > 1 && !loading) {
+    <div class="pagination">
+      <button [disabled]="query.page === 1" (click)="onPageChange(query.page - 1)">←</button>
+
+      @for (page of totalPagesArray(); track page) {
+        <button
+          [class.active]="page === query.page"
+          (click)="onPageChange(page)">
+          {{ page }}
+        </button>
+      }
+
+      <button [disabled]="query.page === totalPages" (click)="onPageChange(query.page + 1)">→</button>
+    </div>
+  }
+</div>

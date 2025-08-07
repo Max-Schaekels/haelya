@@ -74,6 +74,10 @@ export const routes: Routes = [
                 path: 'utilisateurs/:id',
                 loadComponent: () =>
                     import('./pages/admin/user-detail/user-detail.component').then(m => m.UserDetailComponent)
+            },
+            {
+                path: 'catalogue',
+                loadComponent: () => import('./pages/admin/admin-catalogue/admin-catalogue.component').then(m => m.AdminCatalogueComponent)
             }
 
         ]
