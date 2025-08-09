@@ -26,7 +26,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpGet("admin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetAllAdminCategories()
         {
             IEnumerable<CategoryDTO> categories = await _categoryService.GetAllAdminAsync();

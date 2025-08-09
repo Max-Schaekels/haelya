@@ -241,8 +241,34 @@ namespace Haelya.Infrastructure.Repositories
 
         private IQueryable<Product> ApplyFilters(IQueryable<Product> query, ProductFilterAdmin filter)
         {
-            query = ApplyFilters(query, filter); 
+            // Filtres communs
+            if (filter.CategoryId.HasValue)
+            {
+                query = query.Where(p => p.CategoryId == filter.CategoryId.Value);
+            }
 
+            if (filter.BrandId.HasValue)
+            {
+                query = query.Where(p => p.BrandId == filter.BrandId.Value);
+            }
+
+            if (filter.MinPrice.HasValue)
+            {
+                query = query.Where(p => p.Price >= filter.MinPrice.Value);
+            }
+
+            if (filter.MaxPrice.HasValue)
+            {
+                query = query.Where(p => p.Price <= filter.MaxPrice.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter.Search))
+            {
+                string search = filter.Search.Trim();
+                query = query.Where(p => p.Name.Contains(search) || p.Description.Contains(search));
+            }
+
+            // Spécifique Admin : on peut filtrer IsActive si présent
             if (filter.IsActive.HasValue)
             {
                 query = query.Where(p => p.IsActive == filter.IsActive.Value);
