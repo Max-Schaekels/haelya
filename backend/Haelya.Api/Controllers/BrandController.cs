@@ -36,7 +36,7 @@ namespace Haelya.Api.Controllers
 
         // Admin only
         [HttpGet("admin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> GetAllAdmin()
         {
             IEnumerable<BrandDTO> brands = await _brandService.GetAllAdminAsync();
@@ -45,7 +45,7 @@ namespace Haelya.Api.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> Create([FromBody] BrandCreateDTO dto)
         {
             BrandDTO brand = await _brandService.CreateAsync(dto);
@@ -53,7 +53,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> Update(int id, [FromBody] BrandUpdateDTO dto)
         {
             await _brandService.UpdateAsync(id, dto);
@@ -61,7 +61,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpPut("{id}/active")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> SetActive(int id, [FromBody] bool isActive)
         {
             await _brandService.SetActiveAsync(id, isActive);

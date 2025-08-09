@@ -43,7 +43,7 @@ namespace Haelya.Api.Controllers
 
         // POST: api/Category
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryCreateDTO dto)
         {
             CategoryDTO created = await _categoryService.CreateAsync(dto);
@@ -52,7 +52,7 @@ namespace Haelya.Api.Controllers
 
         // PUT: api/Category/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryUpdateDTO dto)
         {
             await _categoryService.UpdateAsync(id, dto);
@@ -60,7 +60,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpPut("{id}/active")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> SetActive(int id, [FromBody] bool isActive)
         {
             await _categoryService.SetActiveAsync(id, isActive);

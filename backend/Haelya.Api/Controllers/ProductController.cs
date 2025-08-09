@@ -58,7 +58,7 @@ namespace Haelya.Api.Controllers
 
         //Admin
         [HttpGet("admin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> GetAllAdmin([FromQuery] PaginationQueryDTO pagination)
         {
             PagedResultDTO<ProductDTO> products = await _productService.GetAllAdminAsync(pagination);
@@ -66,7 +66,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpGet("admin/filtered")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> GetFilteredAdmin([FromQuery] ProductFilterAdminDTO filter)
         {
             PagedResultDTO<ProductDTO> result = await _productService.GetFilteredAdminAsync(filter);
@@ -74,7 +74,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> Create([FromBody] ProductCreateDTO dto)
         {
             ProductDTO product = await _productService.CreateAsync(dto);
@@ -82,7 +82,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> UpdateInfos(int id, [FromBody] ProductUpdateDTO dto)
         {
             await _productService.UpdateAsync(id, dto);
@@ -90,7 +90,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpPut("price")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> UpdatePrice([FromBody] ProductUpdatePriceDTO dto)
         {
             await _productService.UpdatePriceAsync(dto);
@@ -98,7 +98,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpPut("margin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> UpdateMargin([FromBody] ProductUpdateMarginDTO dto)
         {
             await _productService.UpdateMarginAsync(dto);
@@ -106,7 +106,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpPut("{id}/active")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> SetActive(int id, [FromBody] bool isActive)
         {
             await _productService.SetActiveAsync(id, isActive);
@@ -114,7 +114,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpPut("{id}/featured")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> SetFeatured(int id, [FromBody] bool featured)
         {
             await _productService.SetFeaturedAsync(id, featured);
@@ -122,7 +122,7 @@ namespace Haelya.Api.Controllers
         }
 
         [HttpPut("{id}/in-slide")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> SetInSlide(int id, [FromBody] bool inSlide)
         {
             await _productService.SetInSlideAsync(id, inSlide);
