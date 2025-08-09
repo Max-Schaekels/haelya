@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrandService } from '../../../core/services/brand.service';
 import { CategoryService } from '../../../core/services/category.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-admin-catalogue',
@@ -15,9 +17,10 @@ import { CategoryService } from '../../../core/services/category.service';
   styleUrl: './admin-catalogue.component.scss'
 })
 export class AdminCatalogueComponent implements OnInit {
-  private readonly _productService = inject(ProductService);
-  private readonly _categoryService = inject(CategoryService);
-  private readonly _brandService = inject(BrandService);
+  private readonly _productService : ProductService = inject(ProductService);
+  private readonly _categoryService : CategoryService = inject(CategoryService);
+  private readonly _brandService : BrandService = inject(BrandService);
+  private readonly _router : Router = inject(Router);
 
   products: Product[] = [];
   totalCount: number = 0;
@@ -111,7 +114,7 @@ export class AdminCatalogueComponent implements OnInit {
   }
 
   onAddProduct(): void {
-    //TODO : rediriger vers la création 
+    this._router.navigate(['/admin/catalogue/addproduct']);
   }
 
   onViewProduct(id: number): void {

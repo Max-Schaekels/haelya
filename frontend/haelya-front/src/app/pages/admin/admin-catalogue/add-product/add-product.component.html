@@ -1,0 +1,111 @@
+<div class="admin-card">
+    <div class="card-header">
+        <h2>Ajouter un produit</h2>
+        <button type="button" class="btn btn-muted" (click)="backCatalogue()">
+            ← Retour au catalogue
+        </button>
+    </div>
+
+    @if (errorMessage) {
+    <div class="alert alert-error">{{ errorMessage }}</div>
+    }
+
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="form-grid">
+        <!-- Nom -->
+        <div class="form-field">
+            <label for="name">Nom *</label>
+            <input id="name" type="text" formControlName="name" placeholder="Nom du produit" />
+            @if (productForm.get('name')?.touched && productForm.get('name')?.invalid) {
+            <small class="error">Nom requis (max 255).</small>
+            }
+        </div>
+
+        <!-- Image -->
+        <div class="form-field">
+            <label for="imageUrl">URL image *</label>
+            <input id="imageUrl" type="url" formControlName="imageUrl" placeholder="https://..." />
+            @if (productForm.get('imageUrl')?.touched && productForm.get('imageUrl')?.invalid) {
+            <small class="error">URL requise (max 1024).</small>
+            }
+            @if (productForm.get('imageUrl')?.valid && productForm.value.imageUrl) {
+            <div class="image-preview">
+                <img [src]="productForm.value.imageUrl" alt="Aperçu de l'image" />
+            </div>
+            }
+        </div>
+
+        <!-- Catégorie -->
+        <div class="form-field">
+            <label for="categoryId">Catégorie *</label>
+            <select id="categoryId" formControlName="categoryId">
+                <option [ngValue]="null">Sélectionner…</option>
+                @for (c of categories; track c.id) {
+                <option [ngValue]="c.id">{{ c.name }}</option>
+                }
+            </select>
+            @if (productForm.get('categoryId')?.touched && productForm.get('categoryId')?.invalid) {
+            <small class="error">Catégorie requise.</small>
+            }
+        </div>
+
+        <!-- Marque -->
+        <div class="form-field">
+            <label for="brandId">Marque *</label>
+            <select id="brandId" formControlName="brandId">
+                <option [ngValue]="null">Sélectionner…</option>
+                @for (b of brands; track b.id) {
+                <option [ngValue]="b.id">{{ b.name }}</option>
+                }
+            </select>
+            @if (productForm.get('brandId')?.touched && productForm.get('brandId')?.invalid) {
+            <small class="error">Marque requise.</small>
+            }
+        </div>
+
+        <!-- Prix fournisseur -->
+        <div class="form-field">
+            <label for="supplierPrice">Prix fournisseur (€) *</label>
+            <input id="supplierPrice" type="number" min="0" step="0.01" formControlName="supplierPrice" />
+            @if (productForm.get('supplierPrice')?.touched && productForm.get('supplierPrice')?.invalid) {
+            <small class="error">Prix requis (≥ 0).</small>
+            }
+        </div>
+
+        <!-- Marge -->
+        <div class="form-field">
+            <label for="margin">Marge (%) *</label>
+            <input id="margin" type="number" min="0" step="0.01" formControlName="margin" />
+            @if (productForm.get('margin')?.touched && productForm.get('margin')?.invalid) {
+            <small class="error">Marge requise (≥ 0).</small>
+            }
+        </div>
+
+        <!-- Stock -->
+        <div class="form-field">
+            <label for="stock">Stock *</label>
+            <input id="stock" type="number" min="0" step="1" formControlName="stock" />
+            @if (productForm.get('stock')?.touched && productForm.get('stock')?.invalid) {
+            <small class="error">Stock requis (≥ 0).</small>
+            }
+        </div>
+
+        <!-- Description -->
+        <div class="form-field form-span-2">
+            <label for="description">Description</label>
+            <textarea id="description" rows="5" formControlName="description"
+                placeholder="Description du produit"></textarea>
+            @if (productForm.get('description')?.touched && productForm.get('description')?.invalid) {
+            <small class="error">Description trop longue (max 1024).</small>
+            }
+        </div>
+
+        <div class="form-actions form-span-2">
+            <button type="button" class="btn btn-muted" (click)="backCatalogue()">
+                Annuler
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || isSubmitting">
+                @if (!isSubmitting) { <span>Ajouter le produit</span> } @else { <span>Ajout…</span> }
+            </button>
+        </div>
+    </form>
+</div>
