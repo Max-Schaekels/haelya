@@ -83,6 +83,10 @@ export const routes: Routes = [
                 path: 'catalogue/addproduct',
                 loadComponent: () =>
                     import('./pages/admin/admin-catalogue/add-product/add-product.component').then(m => m.AddProductComponent)
+            },
+            {
+                path: 'catalogue/:id',
+                loadComponent: () => import('./pages/admin/admin-catalogue/detail-product/detail-product.component').then(m => m.DetailProductComponent)
             }
         ]
     }

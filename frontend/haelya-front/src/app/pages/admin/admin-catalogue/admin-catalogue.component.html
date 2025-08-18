@@ -42,7 +42,9 @@
       <thead>
         <tr>
           <th>Nom</th>
-          <th>Prix</th>
+          <th>Prix Achat</th>
+          <th>Prix Vente</th>
+          <th>Marge</th>
           <th>Catégorie</th>
           <th>Marque</th>
           <th>Actions</th>
@@ -52,12 +54,16 @@
         @for (product of products; track product.id) {
           <tr>
             <td>{{ product.name }}</td>
+            <td>{{ product.supplierPrice | currency:'EUR' }}</td>
             <td>{{ product.price | currency:'EUR' }}</td>
+            <td> {{ product.margin }} %</td>
             <td>{{ getCategoryName(product.categoryId) }}</td>
             <td>{{ getBrandName(product.brandId) }}</td>
             <td>
-              <button class="btn-details" (click)="onViewProduct(product.id)">Détails</button>
+              <button [routerLink]="['/admin/catalogue', product.id]" class="btn-details" >Détails</button>
               <button class="btn-edit" (click)="onEditProduct(product.id)">Modifier</button>
+              <button class="btn-edit" (click)="onEditPrice(product.id)">Modifier Prix</button>
+              <button class="btn-edit" (click)="onEditMargin(product.id)">Modifier Marge</button>
               <button class="btn-delete" (click)="onDeleteProduct(product.id)">Supprimer</button>
             </td>
           </tr>

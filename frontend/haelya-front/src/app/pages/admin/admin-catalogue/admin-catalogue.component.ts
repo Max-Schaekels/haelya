@@ -7,12 +7,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrandService } from '../../../core/services/brand.service';
 import { CategoryService } from '../../../core/services/category.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-admin-catalogue',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './admin-catalogue.component.html',
   styleUrl: './admin-catalogue.component.scss'
 })
@@ -123,6 +123,14 @@ export class AdminCatalogueComponent implements OnInit {
 
   onEditProduct(id: number): void {
     //TODO rediriger vers le formulaire d’édition
+  }
+
+  onEditPrice(id: number): void{
+    //TODO rediriger vers le formulaire d'édition du prix
+  }
+
+  onEditMargin(id: number): void{
+    //TODO rediriger vers le formulaire d'édition de la marge
   }
 
   onDeleteProduct(id: number): void {

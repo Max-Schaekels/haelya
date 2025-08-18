@@ -1,1 +1,101 @@
-<p>detail-product works!</p>
+<h2>Détails du produit</h2>
+
+@if (loading) {
+    <p>Chargement en cours ...</p>
+} @else {
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  } @else if (product) {
+    <div class="product-card">
+      <div class="product-image">
+        <img [src]="product.imageUrl" [alt]="product.name" />
+      </div>
+
+      <div class="product-row">
+        <span class="label">Nom :</span>
+        <span class="value">{{ product.name }}</span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">Description :</span>
+        <span class="value">{{ product.description || '-' }}</span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">Prix :</span>
+        <span class="value">{{ product.price | currency:'EUR' }}</span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">Prix fournisseur :</span>
+        <span class="value">{{ product.supplierPrice | currency:'EUR' }}</span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">Marge :</span>
+        <span class="value">{{ product.margin | number:'1.2-2' }} €</span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">Stock :</span>
+        <span class="value">{{ product.stock }}</span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">Catégorie :</span>
+        <span class="value">{{ product.categoryName }}</span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">Marque :</span>
+        <span class="value">{{ product.brandName }}</span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">Slug :</span>
+        <span class="value">{{ product.slug }}</span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">Vues :</span>
+        <span class="value">{{ product.viewCount }}</span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">Note moyenne :</span>
+        <span class="value">{{ product.avgNote || '-' }}</span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">Dans le slide :</span>
+        <span class="value">
+          <span [ngClass]="product.inSlide ? 'check-true' : 'check-false'">
+            {{ product.inSlide ? '✔️' : '❌' }}
+          </span>
+        </span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">Actif :</span>
+        <span class="value">
+          <span [ngClass]="product.isActive ? 'check-true' : 'check-false'">
+            {{ product.isActive ? '✔️' : '❌' }}
+          </span>
+        </span>
+      </div>
+
+      <div class="product-row">
+        <span class="label">En vedette :</span>
+        <span class="value">
+          <span [ngClass]="product.featured ? 'check-true' : 'check-false'">
+            {{ product.featured ? '✔️' : '❌' }}
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="return">
+      <a routerLink="/admin/catalogue" class="btn-return">⬅️ Retour à la liste</a>
+    </div>
+  }
+}
