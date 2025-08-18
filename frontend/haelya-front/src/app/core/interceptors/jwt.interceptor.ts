@@ -1,7 +1,8 @@
 import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { catchError, switchMap, throwError } from 'rxjs';
+import { catchError, EMPTY, switchMap, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 // Liste des routes publiques où il ne faut pas renvoyer le token
 const PUBLIC_ROUTES = [
@@ -10,10 +11,13 @@ const PUBLIC_ROUTES = [
     '/api/Auth/Refresh'
 ]
 
+let isRefreshing = false;
+
 export const jwtInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn) => {
   const authService: AuthService = inject(AuthService);
+  const router : Router = inject(Router);
   const token = authService.getToken();
-   const isPublic = PUBLIC_ROUTES.some(route => req.url.includes(route));
+  const isPublic = PUBLIC_ROUTES.some(route => req.url.includes(route));
 
   // Si la route est publique, on laisse passer
   if (isPublic) {
@@ -31,12 +35,22 @@ export const jwtInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: H
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401 && !req.url.includes('/api/Auth/Refresh')) {
-         console.warn('[Interceptor] Token expiré. Tentative de refresh...');
+        
+        // Si un refresh est déjà en cours, on évite la boucle
+        if (isRefreshing) {
+          console.warn('[Interceptor] Refresh déjà en cours, abandon de la requête');
+          return EMPTY; // Annule silencieusement cette requête
+        }
+
+        console.warn('[Interceptor] Token expiré. Tentative de refresh...');
+        isRefreshing = true;
+
         // Le token a probablement expiré → tentative de refresh
         return authService.refreshToken().pipe(
           switchMap(response => {
             const newToken = response.accessToken;
-            authService.saveAuth(newToken)
+            authService.saveAuth(newToken);
+            isRefreshing = false; // Reset du flag
 
             // Rejouer la requête d'origine avec le nouveau token
             const retryReq = req.clone({
@@ -47,10 +61,18 @@ export const jwtInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: H
             return next(retryReq);
           }),
           catchError(refreshError => {
-            console.error('[Interceptor] Refresh échoué, redirection vers /login', refreshError); 
-            // Si le refresh échoue, logout
-            authService.logout();
-            return throwError(() => refreshError);
+            console.error('[Interceptor] Refresh échoué, redirection vers /login', refreshError);
+            isRefreshing = false; // Reset du flag
+            
+            // Logout sans déclencher de requêtes HTTP supplémentaires
+            authService.clearTokens(); // Méthode qui nettoie juste les tokens localement
+            
+            // Navigation directe vers login
+            router.navigate(['/login']).then(() => {
+              console.log('[Interceptor] Redirection vers /login effectuée');
+            });
+            
+            return EMPTY; // Retourne EMPTY au lieu de throwError pour éviter les erreurs en cascade
           })
         );
       }

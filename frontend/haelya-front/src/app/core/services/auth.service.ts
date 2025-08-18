@@ -67,6 +67,12 @@ export class AuthService {
       });
   }
 
+  clearTokens(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+    this.isConnectedSignal.set(false);
+    this.isAdminSignal.set(false);
+  }
+
   private _handleLogout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     this.isConnectedSignal.set(false);
@@ -140,7 +146,7 @@ export class AuthService {
         },
         error: err => {
           console.warn('[AuthService] Échec du refresh token. Déconnexion forcée.', err); // 👈 WARN
-          this.logout();
+          
         }
       })
     );
