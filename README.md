@@ -107,16 +107,16 @@ http://localhost:5200
 	
 2.Install dependencies:
 
-   ```bash
+```bash
    npm install
-	```
+```
 
 
 3. Start the development server:	
 	
-	```bash
+```bash
     ng serve
-	```
+```
 	
 Default URL:
 
