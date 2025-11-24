@@ -65,7 +65,7 @@ haelya/
  │   └─ Haelya.Shared (if present)
  └─ frontend/
      └─ haelya-front (Angular app)
-	``` 
+``` 
 
 	 
 ## ▶️ How to Run the Project
